@@ -10,13 +10,16 @@ def sum(a,b):
         float : sum
 
     Examples :
-    >>>sum(1,3)
+    >>> sum(1,3)
     4
-    >>>sum(40,10)
+    >>> sum(40,10)
     50
 
     """
 
-  return a+b
+    return a+b
 
-print(sum(2,3))
+if __name__=="__main__" :
+    print(sum(2,3))
+    import doctest
+    doctest.testmod(verbose=True)
