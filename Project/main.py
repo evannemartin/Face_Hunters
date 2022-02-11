@@ -10,10 +10,10 @@ def sum(a,b):
         float : sum
 
     Examples :
-    >>> sum(1,3)
-    4
-    >>> sum(40,10)
-    50
+        >>> sum(1,3)
+        4
+        >>> sum(40,10)
+        50
 
     """
 
@@ -23,3 +23,6 @@ if __name__=="__main__" :
     print(sum(2,3))
     import doctest
     doctest.testmod(verbose=True)
+
+#sphinx-apidoc -f -o source/  Project/
+#deploy to test PyPi
