@@ -129,4 +129,8 @@ dmypy.json
 .pyre/
 
 #Data base
+<<<<<<< HEAD
 database/ 
+=======
+database/
+>>>>>>> 9339297c873c6a55e30ce593eb2b2f01727d76aa
