@@ -1,5 +1,6 @@
 import numpy as np
 import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 from glob import glob
 from keras.preprocessing.image import ImageDataGenerator
 from keras.layers import Input, Conv2D, Flatten, Dense, Conv2DTranspose, Reshape, Lambda, Activation, BatchNormalization, LeakyReLU, Dropout
@@ -10,7 +11,7 @@ from keras.callbacks import ModelCheckpoint
 from keras.utils.vis_utils import plot_model
 
 # DATASET :
-DATA_FOLDER = 'github/4BIM_Project/database/img_align_celeba'
+DATA_FOLDER = './database/img_align_celeba'
 filenames = np.array(glob(os.path.join(DATA_FOLDER, '*/*.jpg')))
 NUM_IMAGES = len(filenames)
 print("Total number of images : " + str(NUM_IMAGES))
@@ -89,3 +90,4 @@ vae_encoder_input, vae_encoder_output,  mean_mu, log_var, vae_shape_before_flatt
                                     conv_filters = [32, 64, 64, 64],
                                     conv_kernel_size = [3,3,3,3],
                                     conv_strides = [2,2,2,2])
+print(vae_encoder_input, vae_encoder_output, mean_mu, log_var, vae_shape_before_flattening, vae_encoder)
