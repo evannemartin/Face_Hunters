@@ -18,11 +18,11 @@ def initial_sample(pop, sample_size):
     The selection is based on the euclidienne distance between the pictures of our initial population.
     The <sample_size> vectors whith the highest distance with the other points are selected.
 
-    Parameters :
+    Args :
         pop: an array of np.arrays each corresponding with a picture
         sample_size (int): the number of pictures that will be selected for round 1
 
-    Output :
+    Returns :
         np.array containing <sample_size> vectors from encoded pictures
 
 
@@ -43,4 +43,23 @@ def initial_sample(pop, sample_size):
         sample.append(pop[index[i]])
     return np.asarray(sample)
 
-initial_sample(population, sample_size)
+#initial_sample(population, sample_size)
+
+
+
+def new_children (parent, lambda_) :
+
+    n_children = lambda_ -1 #lambda size of population
+    children=[]
+    for j in range (n_children) :
+        #if np.random.rand(1,1) <1 : propabilité d'avoir notre attribut qui mute
+        child=parent.copy()
+        for i in range(len(parent)) :
+            random_value=np.random.normal(0,1)
+            child[i]+=random_value
+        #print(child)
+        children.append(child)
+    return children
+
+print(population[0])
+print(new_children(population[0], 4))
