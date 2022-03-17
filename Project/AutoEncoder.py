@@ -7,6 +7,7 @@ import keras
 import tensorflow as tf
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+import PIL
 from glob import glob
 from keras.preprocessing.image import ImageDataGenerator
 
@@ -93,29 +94,37 @@ def plot_images(n,decoded):
     return None
 
 # LOAD the DATASET (only 504 first pictures) :
-DATA_FOLDER="./database/img_align_celeba"
+DATA_FOLDER="./database/img_align_celeba/img_align_celeba/"
+X=[]
+for i in range(1,10): #501 so that it doesn't crash for now
+    img = PIL.Image.open(DATA_FOLDER+"00000"+str(i)+".jpg") # This returns an image object
+    img = np.asarray(img) # convert it to ndarray
+    print(type(img))
+    X.append(X)
+
 filenames = np.array(glob(os.path.join(DATA_FOLDER, '*/*.jpg')))
 NUM_IMAGES = len(filenames)
-print("Total number of images : " + str(NUM_IMAGES))
+#print("Total number of images : " + str(NUM_IMAGES))
 
 INPUT_DIM = (128,128,3) # Image dimension
-BATCH_SIZE = 1
+"""BATCH_SIZE = 1
 data_flow = ImageDataGenerator(rescale=1./255).flow_from_directory(DATA_FOLDER,
                                                                    target_size = INPUT_DIM[:2],
                                                                    batch_size = BATCH_SIZE,
                                                                    shuffle = True,
                                                                    class_mode = 'input',
                                                                    subset = 'training'
-                                                                   )
+                                                                   )"""
 #print(data_flow[1])
 #print(data_flow.__len__())
-X=np.empty(504,dtype=object)
+"""X=np.empty(504,dtype=object)
 for i in range(len(data_flow)):
-    X[i]=data_flow[i]
+    X[i]=data_flow[i]"""
 
 
 #print(X[1])
-print(type(X[0]))
+X=np.asarray(X)
+print(np.shape(X[0]))
 
 # TEST THE DIFFERENT FUNCTIONS
 
