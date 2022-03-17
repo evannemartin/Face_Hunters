@@ -47,10 +47,27 @@ def initial_sample(pop, sample_size):
 
 
 
-def new_children (parent, lambda_) :
+def new_population (parent, lambda_) :
+    """ This function allows to mutate the parent's attributes using Gaussian distribution.
+        It returns a new population of mutated vectors while keeping the parent.
 
+        Args :
+            parent: the array selected by the user
+            lambda_ (int): the size of the total population (children + parent)
+
+        Returns :
+            array containing <lambda> vectors from encoded pictures
+
+        Example :
+            >>> len(new_population(population[0], 4))
+            4
+            >>> population[0] in new_population(population[0], 4)
+            True
+
+
+    """
     n_children = lambda_ -1 #lambda size of population
-    children=[]
+    children=[parent]
     for j in range (n_children) :
         #if np.random.rand(1,1) <1 : propabilité d'avoir notre attribut qui mute
         child=parent.copy()
@@ -61,5 +78,8 @@ def new_children (parent, lambda_) :
         children.append(child)
     return children
 
-print(population[0])
-print(new_children(population[0], 4))
+if __name__=="__main__":
+    print(population[0])
+    print(new_population(population[0], 4))
+    import doctest
+    doctest.testmod(verbose=True)
