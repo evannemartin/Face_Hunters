@@ -1,5 +1,5 @@
 import numpy as np                   # advanced math library
-import matplotlib.pyplot as plt      # plotting routines
+#import matplotlib.pyplot as plt      # plotting routines
 
 #input 1000 dimension encoded vector
 
@@ -44,3 +44,19 @@ def initial_sample(pop, sample_size):
     return np.asarray(sample)
 
 initial_sample(population, sample_size)
+
+def new_children (parent, lambda_) :
+
+    n_children = lambda_ -1 #lambda size of population
+    children=np.zeros(n_children)
+    for j in range (n_children) :
+        #if np.random.rand(1,1) <1 : propabilité d'avoir notre attribut qui mute
+        child=parent
+        for i in range(len(parent)) :
+            random_value=np.random.normal(0,1)
+            children[i]+=random_value
+        children[j]=child
+
+    return children
+
+new_children(population[0], 4)
