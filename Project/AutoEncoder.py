@@ -114,7 +114,7 @@ data_flow = ImageDataGenerator(rescale=1./255).flow_from_directory(DATA_FOLDER,
                                                                    shuffle = True,
                                                                    class_mode = 'input',
                                                                    subset = 'training'
-                                                                   )"""
+                                                                   )
 #print(data_flow[1])
 #print(data_flow.__len__())
 """X=np.empty(504,dtype=object)
@@ -124,13 +124,13 @@ for i in range(len(data_flow)):
 
 #print(X[1])
 #X=np.asarray(X)
-print(np.shape(X[0]))
+#print(np.shape(X[0]))
 
 # TEST THE DIFFERENT FUNCTIONS
 
 # first, we need to split the database into training and testing
-from sklearn.model_selection import train_test_split
-X_train, X_test = train_test_split(X, test_size=0.2, random_state=0)
+#from sklearn.model_selection import train_test_split
+#X_train, X_test = train_test_split(X, test_size=0.2, random_state=0)
 
 """#Construct:
 original_dim = 128*128
@@ -203,16 +203,21 @@ decoded = keras.layers.Conv2D(1, (3, 3), activation='sigmoid', padding='same')(x
 
 autoencoder = keras.Model(input_img, decoded)
 encoder = keras.Model(input_img, encoded)
-autoencoder.compile(optimizer='adam', loss='binary_crossentropy')
+autoencoder.compile(optimizer='adam', loss='categorical_crossentropy')
 
 #X_train = X_train.reshape(-1,128,128,3)
 #X_test = X_test.reshape(-1,128,128,3)
-autoencoder.fit(X_train, X_train,
+"""autoencoder.fit(X_train, X_train,
                 epochs=100,
                 batch_size=32,
                 shuffle=True,
-                validation_data=(X_test, X_test))
-                
-encoder.predict(X)   #To get the activations
+                validation_data=(X_test, X_test))"""
+N_EPOCHS = 100
+autoencoder.fit_generator(data_flow,
+                        shuffle=True,
+                        epochs = N_EPOCHS,
+                        initial_epoch = 0,
+                        steps_per_epoch=NUM_IMAGES / BATCH_SIZE)
+#encoder.predict(X)   #To get the activations
 
-decoder.predict()    #To get generate the new faces
+#decoder.predict()    #To get generate the new faces
