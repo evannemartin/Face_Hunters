@@ -45,9 +45,12 @@ def initial_sample(pop, sample_size):
 
 initial_sample(population, sample_size)
 
+<<<<<<< HEAD
 #evolutionary strategies are for small population (not cross-over but gaussian distribution)
 
 
+=======
+>>>>>>> cbf7277dded81fcb1ad82986cd924f17c415516b
 def new_population (parent, lambda_) :
     """ This function allows to mutate the parent's attributes using Gaussian distribution.
         It returns a new population of mutated vectors while keeping the parent.
@@ -75,10 +78,13 @@ def new_population (parent, lambda_) :
         for i in range(len(parent)) :
             random_value=np.random.normal(0,1)
             child[i]+=random_value
+<<<<<<< HEAD
 
             #sigma=alpha*sigmaofneuron (the standard deviation of the neuron that the encoder returns)
             #because we have neurons at 0 so if they have values it will generate unrealistic faces
 
+=======
+>>>>>>> cbf7277dded81fcb1ad82986cd924f17c415516b
         #print(child)
         children.append(child)
     return children
@@ -88,6 +94,9 @@ if __name__=="__main__":
     print(new_population(population[0], 4))
     import doctest
     doctest.testmod(verbose=True)
+<<<<<<< HEAD
 
 
 #test with another code for now
+=======
+>>>>>>> cbf7277dded81fcb1ad82986cd924f17c415516b
