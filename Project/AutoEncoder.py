@@ -106,7 +106,8 @@ data_flow = ImageDataGenerator(rescale=1./255).flow_from_directory(DATA_FOLDER,
                                                                    shuffle = True,
                                                                    class_mode = 'input',
                                                                    subset = 'training'
-                                                                   )
+
+# try to upload the images in an other way                                                                    )
 #print(data_flow[1])
 #print(data_flow.__len__())
 X=np.empty(504,dtype=object)
@@ -123,7 +124,8 @@ print(type(X[0]))
 from sklearn.model_selection import train_test_split
 X_train, X_test = train_test_split(X, test_size=0.2, random_state=0)
 
-"""#Construct:
+''''
+#Construct:
 original_dim = 128*128
 hidden_encoding_dim = 512
 encoding_dim = 64
@@ -147,10 +149,10 @@ decoded_imgs = decoder_.predict(encoded_imgs)
 N = 2  # How many faces we will display
 plot_images(1, decoded_imgs)
 plot_images(9, decoded_imgs)
-"""
+''''
 
 input_shape = (128,128,3)
-encoded_dim = 10
+encoded_dim = 1000
 
 input_img = keras.Input(shape=input_shape)
 x = keras.layers.Conv2D(128, (3, 3),strides=1,activation='relu', padding='same')(input_img)
