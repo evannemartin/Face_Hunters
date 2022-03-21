@@ -123,7 +123,7 @@ for i in range(len(data_flow)):
 
 
 #print(X[1])
-X=np.asarray(X)
+#X=np.asarray(X)
 print(np.shape(X[0]))
 
 # TEST THE DIFFERENT FUNCTIONS
