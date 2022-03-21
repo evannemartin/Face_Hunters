@@ -94,20 +94,20 @@ def plot_images(n,decoded):
     return None
 
 # LOAD the DATASET (only 504 first pictures) :
-DATA_FOLDER="./database/img_align_celeba/img_align_celeba/"
-X=[]
+DATA_FOLDER="./database/img_align_celeba"
+"""X=[]
 for i in range(1,10): #501 so that it doesn't crash for now
     img = PIL.Image.open(DATA_FOLDER+"00000"+str(i)+".jpg") # This returns an image object
     img = np.asarray(img) # convert it to ndarray
     print(type(img))
     X.append(X)
-
+"""
 filenames = np.array(glob(os.path.join(DATA_FOLDER, '*/*.jpg')))
 NUM_IMAGES = len(filenames)
 #print("Total number of images : " + str(NUM_IMAGES))
 
 INPUT_DIM = (128,128,3) # Image dimension
-"""BATCH_SIZE = 1
+BATCH_SIZE = 500
 data_flow = ImageDataGenerator(rescale=1./255).flow_from_directory(DATA_FOLDER,
                                                                    target_size = INPUT_DIM[:2],
                                                                    batch_size = BATCH_SIZE,
@@ -212,3 +212,7 @@ autoencoder.fit(X_train, X_train,
                 batch_size=32,
                 shuffle=True,
                 validation_data=(X_test, X_test))
+                
+encoder.predict(X)   #To get the activations
+
+decoder.predict()    #To get generate the new faces
