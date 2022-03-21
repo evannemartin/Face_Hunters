@@ -7,6 +7,7 @@ import keras
 import tensorflow as tf
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+import PIL
 from glob import glob
 from keras.preprocessing.image import ImageDataGenerator
 
@@ -94,12 +95,19 @@ def plot_images(n,decoded):
 
 # LOAD the DATASET (only 504 first pictures) :
 DATA_FOLDER="./database/img_align_celeba"
+"""X=[]
+for i in range(1,10): #501 so that it doesn't crash for now
+    img = PIL.Image.open(DATA_FOLDER+"00000"+str(i)+".jpg") # This returns an image object
+    img = np.asarray(img) # convert it to ndarray
+    print(type(img))
+    X.append(X)
+"""
 filenames = np.array(glob(os.path.join(DATA_FOLDER, '*/*.jpg')))
 NUM_IMAGES = len(filenames)
-print("Total number of images : " + str(NUM_IMAGES))
+#print("Total number of images : " + str(NUM_IMAGES))
 
 INPUT_DIM = (128,128,3) # Image dimension
-BATCH_SIZE = 1
+BATCH_SIZE = 500
 data_flow = ImageDataGenerator(rescale=1./255).flow_from_directory(DATA_FOLDER,
                                                                    target_size = INPUT_DIM[:2],
                                                                    batch_size = BATCH_SIZE,
@@ -110,19 +118,20 @@ data_flow = ImageDataGenerator(rescale=1./255).flow_from_directory(DATA_FOLDER,
 # try to upload the images in an other way                                                                    )
 #print(data_flow[1])
 #print(data_flow.__len__())
-X=np.empty(504,dtype=object)
+"""X=np.empty(504,dtype=object)
 for i in range(len(data_flow)):
-    X[i]=data_flow[i]
+    X[i]=data_flow[i]"""
 
 
 #print(X[1])
-print(type(X[0]))
+#X=np.asarray(X)
+#print(np.shape(X[0]))
 
 # TEST THE DIFFERENT FUNCTIONS
 
 # first, we need to split the database into training and testing
-from sklearn.model_selection import train_test_split
-X_train, X_test = train_test_split(X, test_size=0.2, random_state=0)
+#from sklearn.model_selection import train_test_split
+#X_train, X_test = train_test_split(X, test_size=0.2, random_state=0)
 
 ''''
 #Construct:
@@ -196,12 +205,21 @@ decoded = keras.layers.Conv2D(1, (3, 3), activation='sigmoid', padding='same')(x
 
 autoencoder = keras.Model(input_img, decoded)
 encoder = keras.Model(input_img, encoded)
-autoencoder.compile(optimizer='adam', loss='binary_crossentropy')
+autoencoder.compile(optimizer='adam', loss='categorical_crossentropy')
 
 #X_train = X_train.reshape(-1,128,128,3)
 #X_test = X_test.reshape(-1,128,128,3)
-autoencoder.fit(X_train, X_train,
+"""autoencoder.fit(X_train, X_train,
                 epochs=100,
                 batch_size=32,
                 shuffle=True,
-                validation_data=(X_test, X_test))
+                validation_data=(X_test, X_test))"""
+N_EPOCHS = 100
+autoencoder.fit_generator(data_flow,
+                        shuffle=True,
+                        epochs = N_EPOCHS,
+                        initial_epoch = 0,
+                        steps_per_epoch=NUM_IMAGES / BATCH_SIZE)
+#encoder.predict(X)   #To get the activations
+
+#decoder.predict()    #To get generate the new faces
