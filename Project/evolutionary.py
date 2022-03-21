@@ -1,5 +1,5 @@
 import numpy as np                   # advanced math library
-import matplotlib.pyplot as plt      # plotting routines
+#import matplotlib.pyplot as plt      # plotting routines
 
 #input 1000 dimension encoded vector
 
@@ -43,9 +43,7 @@ def initial_sample(pop, sample_size):
         sample.append(pop[index[i]])
     return np.asarray(sample)
 
-#initial_sample(population, sample_size)
-
-
+initial_sample(population, sample_size)
 
 def new_population (parent, lambda_) :
     """ This function allows to mutate the parent's attributes using Gaussian distribution.
