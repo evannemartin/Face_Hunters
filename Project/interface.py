@@ -1,4 +1,7 @@
 import tkinter
+import pandas as pds
+from PIL import ImageTk, Image
+
 
 characteristics={"woman":False,"man":False,"young":False,"old":False,"beard":False,"no_beard":False,"straight":False,"no_straight":False}
 print(characteristics)
@@ -103,11 +106,53 @@ def sevent(event):
 def nsevent(event):
     characteristics["no_straight"]=True
 
+#base de données correspondant aux critères
+def choice_database(char):
+    if char["woman"] and char["young"] and char["straight"]:
+        return 'female_young_straight.csv'
+    if char["woman"] and char["young"] and char["no_straight"]:
+        return 'female_young_wavy.csv'
+    if char["woman"] and char["old"] and char["straight"]:
+        return 'female_old_straight.csv'
+    if char["woman"] and char["old"] and char["no_straight"]:
+        return 'female_old_wavy.csv'
+    if char["man"] and char["young"] and char["beard"]:
+        return 'male_young_beard.csv'
+    if char["man"] and char["young"] and char["no_beard"]:
+        return 'male_young_nobeard.csv'
+    if char["man"] and char["old"] and char["beard"]:
+        return 'male_old_beard.csv'
+    if char["man"] and char["old"] and char["no_beard"]:
+        return 'male_old_nobeard.csv'
+
+#choix d'une image dans la base choisie
+def choice_image(database) :
+    db = pds.read_csv(database, sep=",")
+    return db["image_id"][0]
+
+
 def next(event):
+    database=choice_database(characteristics)
     for c in myWindow.winfo_children():
         c.destroy()
     print(characteristics)
     tkinter.Label(myWindow,text='Propose some pictures').pack(padx=10,pady=10)
+    im=choice_image(database)
+    im='../database/img_align_celeba/img_align_celeba/'+im
+    #canv = tkinter.Canvas(myWindow, width=80, height=80, bg='white')
+    #canv.grid(row=2, column=3)
+    photo = ImageTk.PhotoImage(Image.open(im))
+    #chooseBtn=canv.create_image(0.5, 0.5, image=photo)
+    imLab=tkinter.Label(myWindow,image=photo)
+    imLab.pack(padx=10,pady=10)
+    imLab.bind('<Button-1>', chooseimage)
+    myWindow.mainloop()
+
+def chooseimage(event):
+    for c in myWindow.winfo_children():
+        c.destroy()
+    tkinter.Label(myWindow,text='Propose child pictures').pack(padx=10,pady=10)
+
 #First Window
 
 myWindow=tkinter.Tk()

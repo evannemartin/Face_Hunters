@@ -66,3 +66,5 @@ def filter(path):
 
 if __name__=="__main__" :
     filter('../database/list_attr_celeba.csv')
+    db = pds.read_csv('female_young_wavy.csv', sep=",")
+    print(db["image_id"][0])
