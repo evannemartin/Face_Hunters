@@ -209,17 +209,31 @@ autoencoder.compile(optimizer='adam', loss='categorical_crossentropy')
 
 #X_train = X_train.reshape(-1,128,128,3)
 #X_test = X_test.reshape(-1,128,128,3)
-"""autoencoder.fit(X_train, X_train,
+for i in range(len(data_flow)):
+''''autoencoder.fit(X_train, X_train,
                 epochs=100,
                 batch_size=32,
                 shuffle=True,
-                validation_data=(X_test, X_test))"""
-N_EPOCHS = 100
-autoencoder.fit_generator(data_flow,
+                validation_data=(X_test, X_test))''''
+    N_EPOCHS = 100
+    BATCH_SIZE = 20
+    autoencoder.fit(data_flow[i],
                         shuffle=True,
                         epochs = N_EPOCHS,
                         initial_epoch = 0,
                         steps_per_epoch=NUM_IMAGES / BATCH_SIZE)
+
+
+# saving in json format
+json_model = autoencoder.to_json()
+json_file = open('autoencoder_json.json', 'w')
+json_file.write(json_model)
+json_modelenc = encoder.to_json()
+json_file = open('encoder_json.json', 'w')
+json_file.write(json_modelenc)
+json_modeldec = decoder.to_json()
+json_file = open('decoder_json.json', 'w')
+json_file.write(json_modeldec)
 #encoder.predict(X)   #To get the activations
 
 #decoder.predict()    #To get generate the new faces
