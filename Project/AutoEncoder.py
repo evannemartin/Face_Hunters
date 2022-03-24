@@ -19,7 +19,7 @@ from keras.layers import Input, Dense, Conv2D, MaxPooling2D, UpSampling2D, Conv2
 # In this code, we need to work with numpys. To do so, we need to convert our database
 # To an numpy array.
 # UPLOAD THE PATH OF THE DATABASE:
-data_path="./database/img_align_celeba_500"
+data_path="./database/img_align_celeba/img_align_celeba"
 listing = os.listdir(data_path)
 print(listing) #returns a list of all the files of the path
 listarray = [] # creating the array list that will contain the information of our images
@@ -42,7 +42,7 @@ from skimage.transform import resize
 for file in listing_parts[0]:
         if file == file + '.DS_Store':
             continue
-        chemin= "./database/img_align_celeba_500/" + file
+        chemin= "./database/img_align_celeba/img_align_celeba/" + file
         im = image.imread(chemin)
         resized_img = resize(im,(128,128))
         listarray.append(resized_img)
@@ -78,6 +78,7 @@ AE.compile(optimizer='adam', loss='mse')
 # We train the encoder
 AE.fit(X_train, X_train, epochs=2, batch_size=32, shuffle=True, validation_data=(X_test, X_test))
 
+AE.save("./encodeur.h5")
 # We need now to obtain the encoded vector that will be used for the genetic algorithms part:
 def auto_encoder():
     get_encoded_X = Model(inputs=AE.input, outputs=AE.get_layer("CODE").output)
@@ -106,6 +107,8 @@ output_layer_decodeur = Conv2D(3, (3, 3), padding='same', name="OUTPUT")(input_l
 
 D = Model(input_layer_decodeur,output_layer_decodeur)
 D.compile(optimizer='adam', loss='mse')
+
+AE.save("./decodeur.h5")
 
 
 # PART 4: PLOTTING THE PICTURES
