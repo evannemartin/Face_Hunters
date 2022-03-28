@@ -1,6 +1,7 @@
 import tkinter
 import pandas as pds
 from PIL import ImageTk, Image
+import random
 
 
 characteristics={"woman":False,"man":False,"young":False,"old":False,"beard":False,"no_beard":False,"straight":False,"no_straight":False}
@@ -16,8 +17,8 @@ def onClick(event):
         c.destroy()
     initialize()
     mainFrame=tkinter.Frame(myWindow,bg='white',width=30, borderwidth=3, relief='groove')
-    mainFrame.pack(side='top', padx=10, pady=10)
-    tkinter.Label(mainFrame,bg='white',text='What are the agressor characteristics?').pack(padx=10,pady=10)
+    mainFrame.pack(side='top', padx=30, pady=30,fill="x" )
+    tkinter.Label(mainFrame,bg='white',text='What are the agressor characteristics?',font=(10)).pack(padx=20,pady=20)
 
     #the women/man frame
     Frame1=tkinter.Frame(myWindow,borderwidth=3, relief='groove')
@@ -74,12 +75,12 @@ def onClick(event):
 
     #to clear the characteristics is there is an error
     myButton=tkinter.Button(myWindow,text='Missclicking ? Do It Again !', width=50, bg="yellow")
-    myButton.pack(padx=5, pady=5)
+    myButton.pack(padx=20, pady=20, fill="x")
     myButton.bind('<ButtonRelease-1>',onClick)
 
     #show a new window to propose some pictures depending on the characteristics
-    myButton=tkinter.Button(myWindow,text='Suivant', width=50, bg="yellow")
-    myButton.pack(padx=5, pady=5)
+    myButton=tkinter.Button(myWindow,text='Suivant', width=50, bg="yellow", font=(1))
+    myButton.pack(padx=20, pady=20, fill="x")
     myButton.bind('<ButtonRelease-1>',next)
 
 def fevent(event):
@@ -128,7 +129,18 @@ def choice_database(char):
 #choix d'une image dans la base choisie
 def choice_image(database) :
     db = pds.read_csv(database, sep=",")
-    return db["image_id"][0]
+    #print(len(db))
+    list_im=[]
+    list_ind=[]
+    for i in range(10):
+        ind=random.randint(0,len(db)-1)
+        while ind in list_ind : #so it shows distinct pictures
+            ind=random.randint(0,len(database)-1)
+        print(ind)
+        list_im.append(db["image_id"][ind])
+        list_ind.append(ind)
+
+    return list_im
 
 
 def next(event):
@@ -136,37 +148,99 @@ def next(event):
     for c in myWindow.winfo_children():
         c.destroy()
     print(characteristics)
-    tkinter.Label(myWindow,text='Propose some pictures').pack(padx=10,pady=10)
+    tkinter.Label(myWindow,text='Propose some pictures',font=(10)).grid(row=0,column=2)
+    #.pack(padx=10,pady=10)
     im=choice_image(database)
-    im='../database/img_align_celeba/img_align_celeba/'+im
+    source_im=[]
+    photo=[]
+    for i in range (len(im)) :
+        source_im.append('../database/img_align_celeba/img_align_celeba/'+im[i])
+        photo.append(ImageTk.PhotoImage(Image.open(source_im[i])))
+        # imLab2=tkinter.Label(myWindow,image=photo[i])
+        # imLab2.pack(padx=5,pady=5, side="left")
+        # imLab2.bind('<Button-1>', chooseimage(event))
+
     #canv = tkinter.Canvas(myWindow, width=80, height=80, bg='white')
-    #canv.grid(row=2, column=3)
-    photo = ImageTk.PhotoImage(Image.open(im))
+    #canv.grid(row=2, column=
     #chooseBtn=canv.create_image(0.5, 0.5, image=photo)
-    imLab=tkinter.Label(myWindow,image=photo)
-    imLab.pack(padx=10,pady=10)
-    imLab.bind('<Button-1>', chooseimage)
+
+    for i in range(5):
+        myWindow.columnconfigure(i, weight=1)
+
+    myWindow.rowconfigure(1, weight=1)
+
+    # cadre=tkinter.Frame(myWindow)
+    # cadre.pack(side="left")
+    #
+    # cadrebis=tkinter.Frame(myWindow)
+    # cadrebis.pack(side="bottom")
+
+    imLab1=tkinter.Label(myWindow,image=photo[0])
+    imLab1.grid(row=1, column=0)
+    imLab1.bind('<Button-1>', chooseimage)
+
+    imLab2=tkinter.Label(myWindow,image=photo[1])
+    imLab2.grid(row=1, column=1)
+    imLab2.bind('<Button-1>', chooseimage)
+
+    imLab3=tkinter.Label(myWindow,image=photo[2])
+    imLab3.grid(row=1, column=2)
+    imLab3.bind('<Button-1>', chooseimage)
+
+    imLab4=tkinter.Label(myWindow,image=photo[3])
+    imLab4.grid(row=1, column=3)
+    imLab4.bind('<Button-1>', chooseimage)
+
+    imLab5=tkinter.Label(myWindow,image=photo[4])
+    imLab5.grid(row=1, column=4)
+    imLab5.bind('<Button-1>', chooseimage)
+
+    imLab6=tkinter.Label(myWindow,image=photo[5])
+    imLab6.grid(row=2, column=0)
+    imLab6.bind('<Button-1>', chooseimage)
+
+    imLab7=tkinter.Label(myWindow,image=photo[6])
+    imLab7.grid(row=2, column=1)
+    imLab7.bind('<Button-1>', chooseimage)
+
+    imLab8=tkinter.Label(myWindow,image=photo[7])
+    imLab8.grid(row=2, column=2)
+    imLab8.bind('<Button-1>', chooseimage)
+
+    imLab9=tkinter.Label(myWindow,image=photo[8])
+    imLab9.grid(row=2, column=3)
+    imLab9.bind('<Button-1>', chooseimage)
+
+    imLab10=tkinter.Label(myWindow,image=photo[9])
+    imLab10.grid(row=2, column=4)
+    imLab10.bind('<Button-1>', chooseimage)
+
+
     myWindow.mainloop()
 
-def chooseimage(event):
+def chooseimage(event) :
     for c in myWindow.winfo_children():
         c.destroy()
     tkinter.Label(myWindow,text='Propose child pictures').pack(padx=10,pady=10)
+    #print(i)
 
 #First Window
 
 myWindow=tkinter.Tk()
+myWindow.geometry("1000x500")
 myWindow['bg']='white'
 
-Frame1=tkinter.Frame(myWindow,borderwidth=3, relief='groove')
-Frame1.pack(side='top', padx=10, pady=10)
-tkinter.Label(Frame1,text='Project 4BIM').pack(padx=10,pady=10)
+Frame=tkinter.Frame(myWindow,borderwidth=3, relief='groove')
+Frame.pack(side='top', padx=10, pady=10,expand="yes",fill="both")
+title= tkinter.Label(Frame,text='Project 4BIM',font=(20))
+title.place(relx=0.5, rely=0.25, anchor="center")
 
-descLabel=tkinter.Label(Frame1, text='This is an application developped by 4BIM INSA students to help you create a robot portait of your agressor. ')
-descLabel.pack()
+descLabel=tkinter.Label(Frame, text='This is an application developped by 4BIM INSA students to help you create a robot portait of your agressor. ')
+descLabel.place(relx=0.5, rely=0.5, anchor="center")
+#descLabel.pack()
 
-myButton=tkinter.Button(Frame1,text='Start !', width=50, bg="yellow")
-myButton.pack()
+myButton=tkinter.Button(Frame,text='Start !', width=50, bg="yellow")
+myButton.place(relx=0.5, rely=0.75, anchor="center")
 myButton.bind('<ButtonRelease-1>',onClick)
 
 
