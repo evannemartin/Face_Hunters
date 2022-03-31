@@ -1,6 +1,22 @@
 import numpy as np                   # advanced math library
 #import matplotlib.pyplot as plt      # plotting routines
 
+# UPLOAD THE DECODER :
+from keras.models import load_model
+model1 = load_model("./decodeur.h5")
+
+
+#import h5py
+#decodeur_model = h5py.File('./decodeur.h5')
+#a=list(decodeur_model.attrs)
+#print(a)
+#import json
+#b=json.loads(decodeur_model.attrs['model_config'])
+#c=json.loads(decodeur_model.attrs['backend'])
+#d= json.loads(decodeur_model.attrs[ 'keras_version'])
+#e= json.loads(decodeur_model.attrs[ 'training_config'])
+
+print("suite algo")
 #input 1000 dimension encoded vector
 
 #For the sake of this sprint, we are going to create a random population of 20 vectors
