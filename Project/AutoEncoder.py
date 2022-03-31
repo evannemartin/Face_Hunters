@@ -11,9 +11,9 @@ from multiprocessing import Pool
 import os
 from PIL import Image
 from matplotlib import image
-
 from keras.datasets import mnist
-from keras.layers import Input, Dense, Conv2D, MaxPooling2D, UpSampling2D, Conv2DTranspose
+from keras.layers import Input, Dense, Conv2D, MaxPooling2D, UpSampling2D, Conv2DTranspose, Reshape
+from keras import layers
 
 # PART 1
 # In this code, we need to work with numpys. To do so, we need to convert our database
@@ -21,7 +21,7 @@ from keras.layers import Input, Dense, Conv2D, MaxPooling2D, UpSampling2D, Conv2
 # UPLOAD THE PATH OF THE DATABASE:
 data_path="../database/img_align_celeba/img_align_celeba"
 listing = os.listdir(data_path)
-print(listing) #returns a list of all the files of the path
+#print(listing) #returns a list of all the files of the path
 listarray = [] # creating the array list that will contain the information of our images
 
 def cut_list(list, length):
@@ -46,72 +46,96 @@ for file in listing_parts[0]:
         im = image.imread(chemin)
         resized_img = resize(im,(128,128))
         listarray.append(resized_img)
+print(np.shape(resized_img))
 nparray = np.array(listarray)
 
+#######################################################################################################
 
 # PART 2:  THE ENCODER
 #we construct our encoder :
 from sklearn.model_selection import train_test_split
-X_train, X_test = train_test_split (nparray, test_size=0.2, random_state=0)
+X_train, X_test = train_test_split(nparray, test_size=0.2, random_state=0)
 
-input_layer = Input(shape=(128, 128, 3), name="INPUT")
-x = Conv2D(16, (3, 3), activation='relu', padding='same')(input_layer)
-x = MaxPooling2D((2, 2))(x)
-x = Conv2D(8, (3, 3), activation='relu', padding='same')(x)
-x = MaxPooling2D((2, 2))(x)
-x = Conv2D(8, (3, 3), activation='relu', padding='same')(x)
 
-code_layer = MaxPooling2D((2, 2), name="CODE")(x)
+input_img = keras.Input(shape=(128, 128, 3))
+x = layers.Conv2D(64, (3, 3), activation='relu', padding='same')(input_img)
+x = layers.MaxPooling2D((2, 2), padding='same')(x)
+x = layers.Conv2D(32, (3, 3), activation='relu', padding='same')(x)
+x = layers.MaxPooling2D((2, 2), padding='same')(x)
+x = layers.Conv2D(16, (3, 3), activation='relu', padding='same')(x)
+x = layers.MaxPooling2D((2, 2), padding='same')(x)
+x = layers.Conv2D(8, (3, 3), activation='relu', padding='same')(x)
+x=  layers.MaxPooling2D((2, 2), padding='same')(x)
+x=  layers.Flatten()(x)
+encoded=  layers.Dense(100, activation='relu', name="CODE")(x)
 
-x = Conv2DTranspose(8, (3, 3), activation='relu', padding='same')(code_layer)
-x = UpSampling2D((2, 2))(x)
-x = Conv2DTranspose(8, (3, 3), activation='relu', padding='same')(x)
-x = UpSampling2D((2, 2))(x)
-x = Conv2DTranspose(16, (3, 3), activation='relu', padding='same')(x)
-x = UpSampling2D((2,2))(x)
-output_layer = Conv2D(3, (3, 3), padding='same', name="OUTPUT")(x)
+########################################################################################################
 
-AE = Model(input_layer, output_layer)
-AE.compile(optimizer='adam', loss='mse')
+# PART 3:  THE DECODER
+x=layers.Dense(512,activation='relu')(encoded)
+x=layers.Reshape((8,8,8))(x)
+x = layers.UpSampling2D((2, 2))(x)
+x = layers.Conv2D(8, (3, 3), activation='relu', padding='same')(x)
+x = layers.UpSampling2D((2, 2))(x)
+x = layers.Conv2D(16, (3, 3), activation='relu', padding='same')(x)
+x = layers.UpSampling2D((2, 2))(x)
+x = layers.Conv2D(32, (3, 3), activation='relu', padding='same')(x)
+x = layers.UpSampling2D((2, 2))(x)
+decoded = layers.Conv2D(3, (3, 3), activation='sigmoid', padding='same')(x)
 
+autoencoder = keras.Model(input_img, decoded)
+autoencoder.compile(optimizer='adam', loss='binary_crossentropy')
 
 # We train the encoder
+<<<<<<< HEAD
 AE.fit(X_train, X_train, epochs=2, batch_size=32, shuffle=True, validation_data=(X_test, X_test))
 
 AE.save("../encodeur.h5")
 # We need now to obtain the encoded vector that will be used for the genetic algorithms part:
 def auto_encoder():
     get_encoded_X = Model(inputs=AE.input, outputs=AE.get_layer("CODE").output)
+=======
+autoencoder.fit(X_train, X_train, epochs=2, batch_size=32, shuffle=True, validation_data=(X_test, X_test))
+>>>>>>> 6c5eb9a070e0101c57b9e8d7f1e86c91d56dff1b
 
-    encoded = get_encoded_X.predict(X_test)
-    encoded = encoded.reshape((len(X_test), 16*16*8))
+# We create the decoder model
+Decodeur = Model(encoded, decoded)
+Decodeur.compile(optimizer='adam', loss='mse')
+Decodeur.save("./decodeur.h5")
 
+<<<<<<< HEAD
     reconstructed = AE.predict(X_test)
     return encoded, reconstructed
 
 encoded, reconstructed=auto_encoder()
 np.save("../vecteur.npy", encoded) # THE ENCODED VECTOR IS HERE, A txt file is given. to use it for the genetic algorithm
 # you need to reupload it ;)
+=======
+#######################################################################################################
+>>>>>>> 6c5eb9a070e0101c57b9e8d7f1e86c91d56dff1b
 
 
-# PART 3:  THE DECODER
+#PART 4: THE VECTOR
+# We need now to obtain the encoded vector that will be used for the genetic algorithms part:
 
-input_layer_decodeur = Input(shape=(16,16,8), name="INPUT")
-x_decodeur = Conv2DTranspose(8, (3, 3), activation='relu', padding='same')(input_layer_decodeur)
-x_decodeur = UpSampling2D((2, 2))(input_layer_decodeur)
-x_decodeur = Conv2DTranspose(8, (3, 3), activation='relu', padding='same')(input_layer_decodeur)
-x_decodeur = UpSampling2D((2, 2))(input_layer_decodeur)
-x_decodeur = Conv2DTranspose(16, (3, 3), activation='relu', padding='same')(input_layer_decodeur)
-x_decodeur = UpSampling2D((2,2))(input_layer_decodeur)
-output_layer_decodeur = Conv2D(3, (3, 3), padding='same', name="OUTPUT")(input_layer_decodeur)
+get_encoded_X = Model(inputs=autoencoder.input, outputs=autoencoder.get_layer("CODE").output)
+encoded = get_encoded_X.predict(X_test)
+print(len(X_test))
+print(len(encoded[0]))
+#encoded = encoded.reshape(100,100)
+reconstructed = autoencoder.predict(X_test)
 
-D = Model(input_layer_decodeur,output_layer_decodeur)
-D.compile(optimizer='adam', loss='mse')
+np.save("./vecteur.npy", encoded) # THE ENCODED VECTOR IS HERE, A npy file is given. to use it for the genetic algorithm
+# you need to reupload it ;)
 
+<<<<<<< HEAD
 AE.save("../decodeur.h5")
+=======
+>>>>>>> 6c5eb9a070e0101c57b9e8d7f1e86c91d56dff1b
 
+#######################################################################################################
 
-# PART 4: PLOTTING THE PICTURES
+# PART 5: PLOTTING THE PICTURES
 
 def show_face_data(nparray, n=10, title=""):
     plt.figure(figsize=(30, 5))
