@@ -1,10 +1,15 @@
 import numpy as np                   # advanced math library
-#import matplotlib.pyplot as plt      # plotting routines
+import matplotlib.pyplot as plt      # plotting routines
+#import tensorflow as tf
+#from tensorflow import keras
+#import h5py
 
 # UPLOAD THE DECODER :
 from keras.models import load_model
-model1 = load_model("./decodeur.h5") 
-
+#decodeur=np.save(".../decodeur.h5",x[0])
+decodeur = load_model("../decodeur.h5")
+encoded_imgs=np.load("../vecteur.npy")
+#allow_pickle=True
 
 #import h5py
 #decodeur_model = h5py.File('./decodeur.h5')
@@ -59,7 +64,14 @@ def initial_sample(pop, sample_size):
         sample.append(pop[index[i]])
     return np.asarray(sample)
 
-initial_sample(population, sample_size)
+pop=initial_sample(encoded_imgs, sample_size)
+print(pop.shape)
+
+# plt.figure(figsize=(20, 4))
+# sample_decoded_imgs = decodeur.predict(pop)
+# for i in range (len(pop)):
+#     ax = plt.subplot(1, len(pop), i + 1 )
+#     plt.imshow(sample_decoded_imgs[i].reshape(64,64))
 
 #evolutionary strategies are for small population (not cross-over but gaussian distribution)
 
@@ -99,11 +111,11 @@ def new_population (parent, lambda_) :
         children.append(child)
     return children
 
-if __name__=="__main__":
-    print(population[0])
-    print(new_population(population[0], 4))
-    import doctest
-    doctest.testmod(verbose=True)
+# if __name__=="__main__":
+#     print(population[0])
+#     print(new_population(population[0], 4))
+#     import doctest
+#     doctest.testmod(verbose=True)
 
 
 #test with another code for now
