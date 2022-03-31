@@ -3,7 +3,7 @@ import numpy as np                   # advanced math library
 
 # UPLOAD THE DECODER :
 from keras.models import load_model
-model1 = load_model("./decodeur.h5")
+model1 = load_model("./decodeur.h5") 
 
 
 #import h5py
