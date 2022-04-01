@@ -3,12 +3,14 @@ import matplotlib.pyplot as plt      # plotting routines
 #import tensorflow as tf
 #from tensorflow import keras
 #import h5py
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 # UPLOAD THE DECODER :
 from keras.models import load_model
 #decodeur=np.save(".../decodeur.h5",x[0])
-decodeur = load_model("../decodeur.h5")
-encoded_imgs=np.load("../vecteur.npy")
+decoder = load_model("decodeur.h5")
+encoded_imgs=np.load("vecteur.npy")
 #allow_pickle=True
 
 #import h5py
@@ -21,14 +23,13 @@ encoded_imgs=np.load("../vecteur.npy")
 #d= json.loads(decodeur_model.attrs[ 'keras_version'])
 #e= json.loads(decodeur_model.attrs[ 'training_config'])
 
-print("suite algo")
 #input 1000 dimension encoded vector
 
 #For the sake of this sprint, we are going to create a random population of 20 vectors
 #Each vector is populated with random ramples form a uniform distribution
-population=[]
-for i in range(20):
-    population.append(np.random.rand(1,20))
+# population=[]
+# for i in range(20):
+#     population.append(np.random.rand(1,20))
 #print(population[1].shape)
 
 #Next, we will maximise the distance between the first sample that we'll show the victim
@@ -67,16 +68,18 @@ def initial_sample(pop, sample_size):
 pop=initial_sample(encoded_imgs, sample_size)
 print(pop.shape)
 
-# plt.figure(figsize=(20, 4))
-# sample_decoded_imgs = decodeur.predict(pop)
-# for i in range (len(pop)):
-#     ax = plt.subplot(1, len(pop), i + 1 )
-#     plt.imshow(sample_decoded_imgs[i].reshape(64,64))
+plt.figure(figsize=(20, 4))
+sample_decoded_imgs = decoder.predict(pop)
+for i in range (len(pop)):
+    ax = plt.subplot(1, len(pop), i + 1 )
+    plt.imshow(sample_decoded_imgs[i].reshape(128,128,3))
+#plt.show()
+
 
 #evolutionary strategies are for small population (not cross-over but gaussian distribution)
 
 
-def new_population (parent, lambda_) :
+def new_population (pop, parent, lambda_) :
     """ This function allows to mutate the parent's attributes using Gaussian distribution.
         It returns a new population of mutated vectors while keeping the parent.
 
@@ -97,19 +100,38 @@ def new_population (parent, lambda_) :
     """
     n_children = lambda_ -1 #lambda size of population
     children=[parent]
-    for j in range (n_children) :
-        #if np.random.rand(1,1) <1 : propabilité d'avoir notre attribut qui mute
+    std=pop.std(axis=0)          # on a besoin de la dernière population pour obtenir les std
+
+    j=0
+    while j<n_children :
         child=parent.copy()
-        for i in range(len(parent)) :
-            random_value=np.random.normal(0,1)
-            child[i]+=random_value
+        while np.linalg.norm(child-parent)<4:   #tant que la distance entre l'enfant et le parent ne soit pas supérieure à 8
+            random_value=np.random.normal(0,1)  #pour chaque enfant on choisi alpha
+            for i in range(len(parent)) :
+                child[i]+=random_value*std[i]
 
             #sigma=alpha*sigmaofneuron (the standard deviation of the neuron that the encoder returns)
             #because we have neurons at 0 so if they have values it will generate unrealistic faces
 
         #print(child)
-        children.append(child)
-    return children
+        k=1
+        while k<len(children) and  np.linalg.norm(child-children[k])>5: #distance entre les autres enfants
+            k+=1
+
+        if k==len(children):
+            children.append(child)
+            print(np.linalg.norm(child-parent))
+            j+=1
+
+    return np.asarray(children)
+
+
+new_pop=new_population(pop, pop[1],4)
+children_decoded_imgs = decoder.predict(new_pop)
+for i in range (len(new_pop)):
+    ax = plt.subplot(1, len(new_pop), i + 1 )
+    plt.imshow(children_decoded_imgs[i].reshape(128,128,3))
+#plt.show()
 
 # if __name__=="__main__":
 #     print(population[0])

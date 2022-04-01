@@ -18,7 +18,7 @@ def onClick(event):
     initialize()
     mainFrame=tkinter.Frame(myWindow,bg='white',width=30, borderwidth=3, relief='groove')
     mainFrame.pack(side='top', padx=30, pady=30,fill="x" )
-    tkinter.Label(mainFrame,bg='white',text='What are the agressor characteristics?',font=(10)).pack(padx=20,pady=20)
+    tkinter.Label(mainFrame,bg='white',text="What did the agressor look like ?",font=(10)).pack(padx=20,pady=20)
 
     #the women/man frame
     Frame1=tkinter.Frame(myWindow,borderwidth=3, relief='groove')
@@ -47,65 +47,90 @@ def onClick(event):
     oButton.pack(side='right', padx=5, pady=5)
     oButton.bind('<Button-1>', oevent)
 
-    #the beard/no beard frame
-    Frame3=tkinter.Frame(myWindow,borderwidth=3, relief='groove')
-    Frame3.pack(padx=5, pady=5)
 
-    value = tkinter.StringVar()
-    bButton=tkinter.Radiobutton(Frame3,text="Beard",variable=value, value=1)
-    bButton.pack(side='left', padx=5, pady=5)
-    bButton.bind('<Button-1>', bevent)
-
-    nbButton=tkinter.Radiobutton(Frame3,text="No Beard",variable=value, value=2)
-    nbButton.pack(side='right', padx=5, pady=5)
-    nbButton.bind('<Button-1>', nbevent)
-
-    #the straight/no straight hair frame
-    Frame4=tkinter.Frame(myWindow,borderwidth=3, relief='groove')
-    Frame4.pack(padx=5, pady=5)
-
-    value = tkinter.StringVar()
-    sButton=tkinter.Radiobutton(Frame4,text="Straight Hair",variable=value, value=1)
-    sButton.pack(side='left', padx=5, pady=5)
-    sButton.bind('<Button-1>', sevent)
-
-    nsButton=tkinter.Radiobutton(Frame4,text="No Straight Hair",variable=value, value=2)
-    nsButton.pack(side='right', padx=5, pady=5)
-    nsButton.bind('<Button-1>', nsevent)
-
-    #to clear the characteristics is there is an error
-    myButton=tkinter.Button(myWindow,text='Missclicking ? Do It Again !', width=50, bg="yellow")
-    myButton.pack(padx=20, pady=20, fill="x")
-    myButton.bind('<ButtonRelease-1>',onClick)
+    # #to clear the characteristics is there is an error
+    # myButton=tkinter.Button(myWindow,text='Missclicking ? Do It Again !', width=50, bg="yellow")
+    # myButton.pack(padx=20, pady=20, fill="x")
+    # myButton.bind('<ButtonRelease-1>',onClick)
 
     #show a new window to propose some pictures depending on the characteristics
-    myButton=tkinter.Button(myWindow,text='Suivant', width=50, bg="yellow", font=(1))
+    myButton=tkinter.Button(myWindow,text='Next', width=50, bg="yellow", font=(1))
     myButton.pack(padx=20, pady=20, fill="x")
-    myButton.bind('<ButtonRelease-1>',next)
+    myButton.bind('<ButtonRelease-1>',sex_characteristics)
 
 def fevent(event):
     characteristics["woman"]=True
+    characteristics["man"]=False
 
 def hevent(event):
     characteristics["man"]=True
+    characteristics["woman"]=False
 
 def yevent(event):
     characteristics["young"]=True
+    characteristics["old"]=False
 
 def oevent(event):
     characteristics["old"]=True
+    characteristics["young"]=False
 
 def bevent(event):
     characteristics["beard"]=True
+    characteristics["no_beard"]=False
 
 def nbevent(event):
     characteristics["no_beard"]=True
+    characteristics["beard"]=False
 
 def sevent(event):
     characteristics["straight"]=True
+    characteristics["no_straight"]=False
 
 def nsevent(event):
     characteristics["no_straight"]=True
+    characteristics["straight"]=False
+
+def sex_characteristics(event):
+
+    if characteristics["man"]==True:
+        mainFrame=tkinter.Frame(myWindow,bg='white',width=30, borderwidth=3, relief='groove')
+        mainFrame.pack(side='top', padx=30, pady=30,fill="x" )
+        tkinter.Label(mainFrame,bg='white',text='And his beard?',font=(10)).pack(padx=20,pady=20)
+
+        #the beard/no beard frame
+        Frame3=tkinter.Frame(myWindow,borderwidth=3, relief='groove')
+        Frame3.pack(padx=5, pady=5)
+
+        value = tkinter.StringVar()
+        bButton=tkinter.Radiobutton(Frame3,text="Beard",variable=value, value=1)
+        bButton.pack(side='left', padx=5, pady=5)
+        bButton.bind('<Button-1>', bevent)
+
+        nbButton=tkinter.Radiobutton(Frame3,text="No Beard",variable=value, value=2)
+        nbButton.pack(side='right', padx=5, pady=5)
+        nbButton.bind('<Button-1>', nbevent)
+
+    elif characteristics["man"]==False:
+        mainFrame=tkinter.Frame(myWindow,bg='white',width=30, borderwidth=3, relief='groove')
+        mainFrame.pack(side='top', padx=30, pady=30,fill="x" )
+        tkinter.Label(mainFrame,bg='white',text='And her hair?',font=(10)).pack(padx=20,pady=20)
+
+        #the straight/no straight hair frame
+        Frame4=tkinter.Frame(myWindow,borderwidth=3, relief='groove')
+        Frame4.pack(padx=5, pady=5)
+
+        value = tkinter.StringVar()
+        sButton=tkinter.Radiobutton(Frame4,text="Straight Hair",variable=value, value=1)
+        sButton.pack(side='left', padx=5, pady=5)
+        sButton.bind('<Button-1>', sevent)
+
+        nsButton=tkinter.Radiobutton(Frame4,text="No Straight Hair",variable=value, value=2)
+        nsButton.pack(side='right', padx=5, pady=5)
+        nsButton.bind('<Button-1>', nsevent)
+
+    myButton=tkinter.Button(myWindow,text='Show portraits', width=50, bg="yellow", font=(1))
+    myButton.pack(padx=20, pady=20, fill="x")
+    myButton.bind('<ButtonRelease-1>',next)
 
 #base de données correspondant aux critères
 def choice_database(char):
@@ -227,7 +252,7 @@ def chooseimage(event) :
 #First Window
 
 myWindow=tkinter.Tk()
-myWindow.geometry("1000x500")
+myWindow.geometry("1000x600")
 myWindow['bg']='white'
 
 Frame=tkinter.Frame(myWindow,borderwidth=3, relief='groove')

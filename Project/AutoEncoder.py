@@ -87,32 +87,14 @@ autoencoder = keras.Model(input_img, decoded)
 autoencoder.compile(optimizer='adam', loss='binary_crossentropy')
 
 # We train the encoder
-<<<<<<< HEAD
-AE.fit(X_train, X_train, epochs=2, batch_size=32, shuffle=True, validation_data=(X_test, X_test))
-
-AE.save("../encodeur.h5")
-# We need now to obtain the encoded vector that will be used for the genetic algorithms part:
-def auto_encoder():
-    get_encoded_X = Model(inputs=AE.input, outputs=AE.get_layer("CODE").output)
-=======
 autoencoder.fit(X_train, X_train, epochs=2, batch_size=32, shuffle=True, validation_data=(X_test, X_test))
->>>>>>> 6c5eb9a070e0101c57b9e8d7f1e86c91d56dff1b
 
 # We create the decoder model
 Decodeur = Model(encoded, decoded)
 Decodeur.compile(optimizer='adam', loss='mse')
 Decodeur.save("./decodeur.h5")
 
-<<<<<<< HEAD
-    reconstructed = AE.predict(X_test)
-    return encoded, reconstructed
-
-encoded, reconstructed=auto_encoder()
-np.save("../vecteur.npy", encoded) # THE ENCODED VECTOR IS HERE, A txt file is given. to use it for the genetic algorithm
-# you need to reupload it ;)
-=======
 #######################################################################################################
->>>>>>> 6c5eb9a070e0101c57b9e8d7f1e86c91d56dff1b
 
 
 #PART 4: THE VECTOR
@@ -128,10 +110,6 @@ reconstructed = autoencoder.predict(X_test)
 np.save("./vecteur.npy", encoded) # THE ENCODED VECTOR IS HERE, A npy file is given. to use it for the genetic algorithm
 # you need to reupload it ;)
 
-<<<<<<< HEAD
-AE.save("../decodeur.h5")
-=======
->>>>>>> 6c5eb9a070e0101c57b9e8d7f1e86c91d56dff1b
 
 #######################################################################################################
 
