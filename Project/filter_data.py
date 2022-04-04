@@ -1,5 +1,16 @@
 import pandas as pds
 import numpy as np
+import csv
+from matplotlib import image
+from skimage.transform import resize
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+
+# UPLOAD THE DECODER :
+from keras.models import load_model
+#decodeur=np.save(".../decodeur.h5",x[0])
+encoder = load_model("encodeur.h5")
+
 
 def filter(path):
     """
@@ -64,7 +75,39 @@ def filter(path):
     #print("Liste des femmes jeunes sans straight :", db_female_young_wavy)
     #print("Liste des femmes vieilles sans straight :", db_female_old_wavy)
 
+
+def split_encoded_images(encoder, csv_file):
+    f=open(csv_file)
+    csv_f = csv.reader(f)
+    list_ref=[]
+
+    for row in csv_f:
+        ref=row[1]
+        #print(ref)
+        list_ref.append(ref)
+
+    original_images=[]
+    data_path="../database/img_align_celeba/img_align_celeba/"
+    for file in list_ref[1:]:
+            chemin= data_path + file
+            im = image.imread(chemin)
+            resized_img = resize(im,(128,128))
+            original_images.append(resized_img)
+    #print(np.shape(resized_img))
+    nparray = np.array(original_images)
+
+    #encode images and save them in a file :
+    encoded_images = encoder.predict(nparray)
+    np.save("img_"+string(csv_file)+".npy", encoded_images)
+
+
+
+
 if __name__=="__main__" :
-    filter('../database/list_attr_celeba.csv')
-    db = pds.read_csv('female_young_wavy.csv', sep=",")
-    print(db["image_id"][0])
+    #filter('../database/list_attr_celeba.csv')
+    #db = pds.read_csv('female_young_wavy.csv', sep=",")
+    #print(db["image_id"][0])
+    split_encoded_images(encoder, "male_old_beard.csv")
+    vecteur=np.load("img_male_old_beard.csv.npy")
+    print(len(vecteur))
+    print(len(vecteur[0]))
