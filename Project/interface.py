@@ -2,6 +2,7 @@ import tkinter
 import pandas as pds
 from PIL import ImageTk, Image
 import random
+import evolutionary
 
 
 characteristics={"woman":False,"man":False,"young":False,"old":False,"beard":False,"no_beard":False,"straight":False,"no_straight":False}
