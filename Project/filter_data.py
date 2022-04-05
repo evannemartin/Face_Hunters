@@ -88,7 +88,7 @@ def split_encoded_images(encoder, csv_file):
 
     original_images=[]
     data_path="../database/img_align_celeba/img_align_celeba/"
-    for file in list_ref[1:]:
+    for file in list_ref[1:2001]:
             chemin= data_path + file
             im = image.imread(chemin)
             resized_img = resize(im,(128,128))
