@@ -98,7 +98,7 @@ def split_encoded_images(encoder, csv_file):
 
     #encode images and save them in a file :
     encoded_images = encoder.predict(nparray)
-    np.save("img_"+string(csv_file)+".npy", encoded_images)
+    np.save("img_"+str(csv_file)+".npy", encoded_images)
 
 
 
