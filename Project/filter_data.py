@@ -101,7 +101,7 @@ def split_encoded_images(encoder, csv_file):
     np.save("img_"+str(csv_file)+".npy", encoded_images)
 
 
-
+#modif
 
 if __name__=="__main__" :
     #filter('../database/list_attr_celeba.csv')
