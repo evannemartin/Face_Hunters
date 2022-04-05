@@ -88,7 +88,7 @@ def split_encoded_images(encoder, csv_file):
 
     original_images=[]
     data_path="../database/img_align_celeba/img_align_celeba/"
-    for file in list_ref[1:]:
+    for file in list_ref[1:2001]:
             chemin= data_path + file
             im = image.imread(chemin)
             resized_img = resize(im,(128,128))
@@ -98,7 +98,7 @@ def split_encoded_images(encoder, csv_file):
 
     #encode images and save them in a file :
     encoded_images = encoder.predict(nparray)
-    np.save("img_"+string(csv_file)+".npy", encoded_images)
+    np.save("img_"+str(csv_file)+".npy", encoded_images)
 
 
 
