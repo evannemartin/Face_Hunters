@@ -1,10 +1,20 @@
 import tkinter
+import numpy as np
 import pandas as pds
+import matplotlib.pyplot as plt
 from PIL import ImageTk, Image
 import random
 import evolutionary
+import os
+from keras.models import load_model
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 
+decoder = load_model("decodeur.h5")
+
+
+
+### CHOOSE CHARACTERISTICS
 characteristics={"woman":False,"man":False,"young":False,"old":False,"beard":False,"no_beard":False,"straight":False,"no_straight":False}
 print(characteristics)
 
@@ -131,57 +141,69 @@ def sex_characteristics(event):
 
     myButton=tkinter.Button(myWindow,text='Show portraits', width=50, bg="yellow", font=(1))
     myButton.pack(padx=20, pady=20, fill="x")
-    myButton.bind('<ButtonRelease-1>',next)
+    myButton.bind('<ButtonRelease-1>',inital_population)
 
 #base de données correspondant aux critères
 def choice_database(char):
     if char["woman"] and char["young"] and char["straight"]:
-        return 'female_young_straight.csv'
+        return 'img_female_young_straight.csv.npy'
     if char["woman"] and char["young"] and char["no_straight"]:
-        return 'female_young_wavy.csv'
+        return 'img_female_young_wavy.csv.npy'
     if char["woman"] and char["old"] and char["straight"]:
-        return 'female_old_straight.csv'
+        return 'img_female_old_straight.csv.npy'
     if char["woman"] and char["old"] and char["no_straight"]:
-        return 'female_old_wavy.csv'
+        return 'img_female_old_wavy.csv.npy'
     if char["man"] and char["young"] and char["beard"]:
-        return 'male_young_beard.csv'
+        return 'img_male_young_beard.csv.npy'
     if char["man"] and char["young"] and char["no_beard"]:
-        return 'male_young_nobeard.csv'
+        return 'img_male_young_nobeard.csv.npy'
     if char["man"] and char["old"] and char["beard"]:
-        return 'male_old_beard.csv'
+        return 'img_male_old_beard.csv.npy'
     if char["man"] and char["old"] and char["no_beard"]:
-        return 'male_old_nobeard.csv'
+        return 'img_male_old_nobeard.csv.npy'
 
 #choix d'une image dans la base choisie
-def choice_image(database) :
-    db = pds.read_csv(database, sep=",")
-    #print(len(db))
-    list_im=[]
-    list_ind=[]
-    for i in range(10):
-        ind=random.randint(0,len(db)-1)
-        while ind in list_ind : #so it shows distinct pictures
-            ind=random.randint(0,len(database)-1)
-        print(ind)
-        list_im.append(db["image_id"][ind])
-        list_ind.append(ind)
+# def choice_image(database) :
+#     db = pds.read_csv(database, sep=",")
+#     #print(len(db))
+#     list_im=[]
+#     list_ind=[]
+#     for i in range(10):
+#         ind=random.randint(0,len(db)-1)
+#         while ind in list_ind : #so it shows distinct pictures
+#             ind=random.randint(0,len(database)-1)
+#         print(ind)
+#         list_im.append(db["image_id"][ind])
+#         list_ind.append(ind)
+#
+#     return list_im
 
-    return list_im
+##PRESENTATION DE LA POPULATION INITIAL
 
+def _photo_image(image):
+    height, width = image.shape[:2]
+    data = f'P5 {width} {height} 255 '.encode() + image.astype(np.uint8).tobytes()
+    return tkinter.PhotoImage(width=width, height=height, data=data, format='PPM')
 
-def next(event):
+def inital_population(event):
     database=choice_database(characteristics)
     for c in myWindow.winfo_children():
         c.destroy()
     print(characteristics)
     tkinter.Label(myWindow,text='Propose some pictures',font=(10)).grid(row=0,column=2)
     #.pack(padx=10,pady=10)
-    im=choice_image(database)
-    source_im=[]
+
+    encoded_imgs=np.load(database)
+    sample_size=10
+    pop0=evolutionary.initial_sample(encoded_imgs, sample_size)
+
+    pop0_decoded_imgs = decoder.predict(pop0)
+
     photo=[]
-    for i in range (len(im)) :
-        source_im.append('../database/img_align_celeba/img_align_celeba/'+im[i])
-        photo.append(ImageTk.PhotoImage(Image.open(source_im[i])))
+    for i in range (len(pop0_decoded_imgs)) :
+        #photo.append(_photo_image(pop0_decoded_imgs[i]))
+        plt.imsave("img", pop0_decoded_imgs[i].reshape(128,128,3), format="png")
+        photo.append(ImageTk.PhotoImage(Image.open("img")))
         # imLab2=tkinter.Label(myWindow,image=photo[i])
         # imLab2.pack(padx=5,pady=5, side="left")
         # imLab2.bind('<Button-1>', chooseimage(event))

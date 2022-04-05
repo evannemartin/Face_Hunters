@@ -1,10 +1,11 @@
 import numpy as np                   # advanced math library
 import matplotlib.pyplot as plt      # plotting routines
+import random
 #import tensorflow as tf
 #from tensorflow import keras
 #import h5py
 import os
-import cv2
+#import cv2
 from PIL import Image
 import scipy.misc
 
@@ -13,8 +14,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 # UPLOAD THE DECODER :
 from keras.models import load_model
 #decodeur=np.save(".../decodeur.h5",x[0])
-decoder = load_model("decodeur.h5")
-encoded_imgs=np.load("vecteur.npy")
+
 #allow_pickle=True
 
 #import h5py
@@ -69,23 +69,18 @@ def initial_sample(pop, sample_size):
         sample.append(pop[index[i]])
     return np.asarray(sample)
 
-pop=initial_sample(encoded_imgs, sample_size) #encoded_imgs from the database which
-#has to be choose by the user
-print(pop.shape)
 
-plt.figure(figsize=(20, 4))
-sample_decoded_imgs = decoder.predict(pop)
-for i in range (len(pop)):
-    ax = plt.subplot(1, len(pop), i + 1 )
-    plt.imshow(sample_decoded_imgs[i].reshape(128,128,3))
 
-    im_rgb = cv2.cvtColor(255*sample_decoded_imgs[i], cv2.COLOR_BGR2RGB)
-    # min_val,max_val=img.min(),img.max()
-    # img = 255.0*(img - min_val)/(max_val - min_val)
-    # img = img.astype(np.uint8)
-    file='parents/parent'+str(i)+'.png'
-    cv2.imwrite(file,im_rgb)
-plt.show()
+
+
+
+    # im_rgb = cv2.cvtColor(255*sample_decoded_imgs[i], cv2.COLOR_BGR2RGB)
+    # # min_val,max_val=img.min(),img.max()
+    # # img = 255.0*(img - min_val)/(max_val - min_val)
+    # # img = img.astype(np.uint8)
+    # file='parents/parent'+str(i)+'.png'
+    # cv2.imwrite(file,im_rgb)
+#plt.show()
 
 
 #evolutionary strategies are for small population (not cross-over but gaussian distribution)
@@ -117,18 +112,24 @@ def new_population (pop, parent, lambda_) :
     j=0
     while j<n_children :
         child=parent.copy()
-        while np.linalg.norm(child-parent)<4:   #tant que la distance entre l'enfant et le parent ne soit pas supérieure à 8
+        print(j)
+        while np.linalg.norm(child-parent)<11:   #tant que la distance entre l'enfant et le parent ne soit pas supérieure à 11
+            #print(np.linalg.norm(child-parent))
+            #print("OK")
             random_value=np.random.normal(0,1)  #pour chaque enfant on choisi alpha
-            for i in range(len(parent)) :
-                child[i]+=random_value*std[i]
+            #max_std= np.argpartition(std,300)[:300] #pour chaque enfant on choisi les 500 index dont la std sont les plus petites
+            for i in range(len(child)) :
+                child[i]+=random_value*std[i]*0.5
 
             #sigma=alpha*sigmaofneuron (the standard deviation of the neuron that the encoder returns)
             #because we have neurons at 0 so if they have values it will generate unrealistic faces
 
         #print(child)
         k=1
-        while k<len(children) and  np.linalg.norm(child-children[k])>5: #distance entre les autres enfants
-            k+=1 #je comprends pas
+        while k<len(children) and  np.linalg.norm(child-children[k])>4: #distance entre les autres enfants supérieur à 4
+            #print("OKOK")
+            k+=1
+
 
         if k==len(children):
             children.append(child)
@@ -138,24 +139,41 @@ def new_population (pop, parent, lambda_) :
     return np.asarray(children)
 
 
-new_pop=new_population(pop, pop[1],4) #pop is the database choose by the user
-children_decoded_imgs = decoder.predict(new_pop)
-print(type(children_decoded_imgs))
-for i in range (len(new_pop)):
-    ax = plt.subplot(1, len(new_pop), i + 1 )
-    plt.imshow(children_decoded_imgs[i].reshape(128,128,3))
-    name='children/child'+str(i)+'.png'
-    im_rgb = cv2.cvtColor(255*children_decoded_imgs[i], cv2.COLOR_BGR2RGB)
-
-    #Image.fromarray(im_rgb).save()
-    cv2.imwrite(name, im_rgb)
-plt.show()
-
-# if __name__=="__main__":
-#     print(population[0])
-#     print(new_population(population[0], 4))
-#     import doctest
-#     doctest.testmod(verbose=True)
 
 
-#test with another code for now
+if __name__=="__main__":
+    import doctest
+    doctest.testmod(verbose=True)
+
+    decoder = load_model("decodeur.h5")
+    encoded_imgs=np.load("img_female_old_straight.csv.npy")
+
+    pop=initial_sample(encoded_imgs, sample_size) #encoded_imgs from the database which
+    #print(pop.shape)
+
+
+
+## Montrer la population initiale
+    plt.figure(figsize=(20, 4))
+    sample_decoded_imgs = decoder.predict(pop)
+    for i in range (len(pop)):
+        ax = plt.subplot(1, len(pop), i + 1 )
+        plt.imshow(sample_decoded_imgs[i].reshape(128,128,3))
+        ax.get_xaxis().set_visible(False)
+        ax.get_yaxis().set_visible(False)
+    plt.show()
+
+
+## Montrer enfants
+    new_pop=new_population(pop, pop[0],4) #pop is the database choose by the user
+    children_decoded_imgs = decoder.predict(new_pop)
+    print(type(children_decoded_imgs))
+    for i in range (len(new_pop)):
+        ax = plt.subplot(1, len(new_pop), i + 1 )
+        plt.imshow(children_decoded_imgs[i].reshape(128,128,3))
+        #name='children/child'+str(i)+'.png'
+        #im_rgb = cv2.cvtColor(255*children_decoded_imgs[i], cv2.COLOR_BGR2RGB)
+
+        #Image.fromarray(im_rgb).save()
+        #cv2.imwrite(name, im_rgb)
+    plt.show()
