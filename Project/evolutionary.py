@@ -112,7 +112,7 @@ def new_population (pop, parent, lambda_) :
     j=0
     while j<n_children :
         child=parent.copy()
-        print(j)
+        #print(j)
         while np.linalg.norm(child-parent)<11:   #tant que la distance entre l'enfant et le parent ne soit pas supérieure à 11
             #print(np.linalg.norm(child-parent))
             #print("OK")
@@ -133,7 +133,7 @@ def new_population (pop, parent, lambda_) :
 
         if k==len(children):
             children.append(child)
-            print(np.linalg.norm(child-parent))
+            #print(np.linalg.norm(child-parent))
             j+=1
 
     return np.asarray(children)

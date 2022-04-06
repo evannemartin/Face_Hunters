@@ -180,17 +180,12 @@ def choice_database(char):
 
 ##PRESENTATION DE LA POPULATION INITIAL
 
-def _photo_image(image):
-    height, width = image.shape[:2]
-    data = f'P5 {width} {height} 255 '.encode() + image.astype(np.uint8).tobytes()
-    return tkinter.PhotoImage(width=width, height=height, data=data, format='PPM')
-
 def inital_population(event):
     database=choice_database(characteristics)
     for c in myWindow.winfo_children():
         c.destroy()
-    print(characteristics)
-    tkinter.Label(myWindow,text='Propose some pictures',font=(10)).grid(row=0,column=2)
+    #print(characteristics)
+    tkinter.Label(myWindow,text='Do you recognise one of the suspects ?',font=(10)).grid(row=0,column=2)
     #.pack(padx=10,pady=10)
 
     encoded_imgs=np.load(database)
@@ -225,52 +220,129 @@ def inital_population(event):
 
     imLab1=tkinter.Label(myWindow,image=photo[0])
     imLab1.grid(row=1, column=0)
-    imLab1.bind('<Button-1>', chooseimage)
+    imLab1.bind('<Button-1>', lambda event,  pop=pop0, i=0, nb_children=4: chooseimage(pop, i, nb_children))
 
     imLab2=tkinter.Label(myWindow,image=photo[1])
     imLab2.grid(row=1, column=1)
-    imLab2.bind('<Button-1>', chooseimage)
+    imLab2.bind('<Button-1>', lambda event,  pop=pop0, i=1, nb_children=4: chooseimage(pop, i, nb_children))
 
     imLab3=tkinter.Label(myWindow,image=photo[2])
     imLab3.grid(row=1, column=2)
-    imLab3.bind('<Button-1>', chooseimage)
+    imLab3.bind('<Button-1>', lambda event,  pop=pop0, i=2, nb_children=4: chooseimage(pop, i, nb_children))
 
     imLab4=tkinter.Label(myWindow,image=photo[3])
     imLab4.grid(row=1, column=3)
-    imLab4.bind('<Button-1>', chooseimage)
+    imLab4.bind('<Button-1>', lambda event,  pop=pop0, i=3, nb_children=4: chooseimage(pop, i, nb_children))
 
     imLab5=tkinter.Label(myWindow,image=photo[4])
     imLab5.grid(row=1, column=4)
-    imLab5.bind('<Button-1>', chooseimage)
+    imLab5.bind('<Button-1>', lambda event,  pop=pop0, i=4, nb_children=4: chooseimage(pop, i, nb_children))
 
     imLab6=tkinter.Label(myWindow,image=photo[5])
     imLab6.grid(row=2, column=0)
-    imLab6.bind('<Button-1>', chooseimage)
+    imLab6.bind('<Button-1>', lambda event,  pop=pop0, i=5, nb_children=4: chooseimage(pop, i, nb_children))
 
     imLab7=tkinter.Label(myWindow,image=photo[6])
     imLab7.grid(row=2, column=1)
-    imLab7.bind('<Button-1>', chooseimage)
+    imLab7.bind('<Button-1>', lambda event,  pop=pop0, i=6, nb_children=4: chooseimage(pop, i, nb_children))
 
     imLab8=tkinter.Label(myWindow,image=photo[7])
     imLab8.grid(row=2, column=2)
-    imLab8.bind('<Button-1>', chooseimage)
+    imLab8.bind('<Button-1>', lambda event,  pop=pop0, i=7, nb_children=4: chooseimage(pop, i, nb_children))
 
     imLab9=tkinter.Label(myWindow,image=photo[8])
     imLab9.grid(row=2, column=3)
-    imLab9.bind('<Button-1>', chooseimage)
+    imLab9.bind('<Button-1>', lambda event,  pop=pop0, i=8, nb_children=4: chooseimage(pop, i, nb_children))
 
     imLab10=tkinter.Label(myWindow,image=photo[9])
     imLab10.grid(row=2, column=4)
-    imLab10.bind('<Button-1>', chooseimage)
+    imLab10.bind('<Button-1>', lambda event,  pop=pop0, i=9, nb_children=4: chooseimage(pop, i, nb_children))
 
 
     myWindow.mainloop()
 
-def chooseimage(event) :
+
+
+
+###### PRESENT CHILDREN
+
+def chooseimage(pop, i, nb_children) :
     for c in myWindow.winfo_children():
         c.destroy()
-    tkinter.Label(myWindow,text='Propose child pictures').pack(padx=10,pady=10)
+    tkinter.Label(myWindow,text='Do you recognise one of the suspects ?').place(relx=0.5, rely=0.1, anchor="center")
     #print(i)
+    new_pop=evolutionary.new_population(pop, pop[i], nb_children)
+    children_decoded_imgs = decoder.predict(new_pop)
+    #print(len(children_decoded_imgs))
+    photo=[]
+    for j in range (len(children_decoded_imgs)) :
+        plt.imsave("img", children_decoded_imgs[j].reshape(128,128,3), format="png")
+        photo.append(ImageTk.PhotoImage(Image.open("img")))
+
+    #print(len(photo))
+    for k in range(4):
+        myWindow.columnconfigure(k, weight=1)
+
+    myWindow.rowconfigure(1, weight=1)
+
+    imLab1=tkinter.Label(myWindow,image=photo[0])
+    imLab1.grid(row=1, column=0)
+    imLab1.bind('<Button-1>', lambda event, photo=photo, pop=new_pop, i=0, nb_children=4: end_or_continue(photo, pop, i, nb_children))
+
+    imLab2=tkinter.Label(myWindow,image=photo[1])
+    imLab2.grid(row=1, column=1)
+    imLab2.bind('<Button-1>', lambda event, photo=photo, pop=new_pop, i=1, nb_children=4: end_or_continue(photo, pop, i, nb_children))
+
+    imLab3=tkinter.Label(myWindow,image=photo[2])
+    imLab3.grid(row=1, column=2)
+    imLab3.bind('<Button-1>', lambda event, photo=photo, pop=new_pop, i=2, nb_children=4: end_or_continue(photo, pop, i, nb_children))
+
+    imLab4=tkinter.Label(myWindow,image=photo[3])
+    imLab4.grid(row=1, column=3)
+    imLab4.bind('<Button-1>', lambda event, photo=photo, pop=new_pop, i=3, nb_children=4: end_or_continue(photo, pop, i, nb_children))
+
+    myWindow.mainloop()
+
+
+### END OF LOOP?
+
+def end_or_continue(photo, pop, i, nb_children):
+
+    for c in myWindow.winfo_children():
+        c.destroy()
+    tkinter.Label(myWindow,text='Is this your agressor ?').place(relx=0.5, rely=0.1, anchor="center")
+
+    imLab1=tkinter.Label(myWindow,image=photo[i])
+    imLab1.place(relx=.5,rely=.5, anchor="center")
+
+
+    myEndButton=tkinter.Button(myWindow,text='I have found my suspect', width=50, bg="yellow", font=(1))
+    myEndButton.grid(row=2, column=0)
+    myEndButton.bind('<ButtonRelease-1>',lambda event, photo=photo, parent=i: found_agressor(photo, parent))
+
+    myContinueButton=tkinter.Button(myWindow,text='Show other portraits', width=50, bg="yellow", font=(1))
+    myContinueButton.grid(row=2, column=3)
+    myContinueButton.bind('<ButtonRelease-1>',lambda event, pop=pop, i=i, nb_children=4 : chooseimage(pop, i, nb_children))
+
+
+
+
+### CRIMINAL FOUND
+
+def found_agressor(photo, parent):
+    for c in myWindow.winfo_children():
+        c.destroy()
+    tkinter.Label(myWindow,text='Portrait of the suspect').place(relx=0.5, rely=0.1, anchor="center")
+
+    imLab1=tkinter.Label(myWindow,image=photo[parent])
+    imLab1.place(relx=.5,rely=.5, anchor="center")
+
+    tkinter.Label(myWindow,text='Thank you for you collaboration !').place(relx=0.5, rely=0.9, anchor="center")
+
+
+
+
+
 
 #First Window
 
