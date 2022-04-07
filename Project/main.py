@@ -3,7 +3,7 @@ def sum(a,b):
     return the sum of the 2 input a and b.
 
     Args :
-        a (float): nb1
+        a (float): nb1\n
         b (float) : nb2
 
     Returns :

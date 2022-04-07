@@ -31,7 +31,7 @@ def initial_sample(pop, sample_size):
     The <sample_size> vectors whith the highest distance with the other points are selected.
 
     Args :
-        pop: an array of np.arrays each corresponding with a picture
+        pop: an array of np.arrays each corresponding with a picture\n
         sample_size (int): the number of pictures that will be selected for round 1
 
     Returns :
@@ -72,17 +72,17 @@ def initial_sample(pop, sample_size):
 #evolutionary strategies are for small population (not cross-over but gaussian distribution)
 
 
-def cross_over(pop, parent, lambda_):
+def cross_over(pop, parent, lamb):
     """ This function allows to cross-over the selected parent with random other images with the same characteristics (sex, age and hair/beard wise).
         It returns a new population of mutated vectors while keeping the parent.
 
         Args :
-            pop : encoded images vector of the whole database
-            parent: the array selected by the user
-            lambda_ (int): the size of the total population (children + parent)
+            pop : encoded images vector of the whole database\n
+            parent: the array selected by the user\n
+            lamb (int): the size of the total population (children + parent)
 
         Returns :
-            array containing <lambda> vectors from encoded pictures
+            array containing lamb vectors from encoded pictures
 
         Example :
             >>> len(cross_over(population, population[0], 4))
@@ -124,17 +124,17 @@ def mutation(pop):
     return pop
 
 
-def get_children_from_parent(pop, parent, lambda_):
+def get_children_from_parent(pop, parent, lamb):
     """ This function allows to cross-over the parent pictures with other pictures and mutate the result picture to add diversity.
         It returns a new population of mutated vectors.
 
         Args :
-            pop : encoded images vector of the whole database
-            parent: the array selected by the user
-            lambda_ (int): the size of the total population (children + parent)
+            pop : encoded images vector of the whole database\n
+            parent: the array selected by the user\n
+            lamb (int): the size of the total population (children + parent)
 
         Returns :
-            array containing <lambda> vectors from encoded pictures
+            array containing lamb vectors from encoded pictures
     """
     children=cross_over(pop, parent, lambda_)
     mutated_children=mutation(children)
@@ -145,17 +145,17 @@ def get_children_from_parent(pop, parent, lambda_):
 
 
 
-def new_population (pop, parent, lambda_) :
+def new_population (pop, parent, lamb) :
     """ This function allows to mutate the parent's attributes using Gaussian distribution.
         It returns a new population of mutated vectors while keeping the parent.
 
         Args :
-            pop : encoded images vector
-            parent : the array selected by the user
-            lambda_ (int) : the size of the total population (children + parent)
+            pop : encoded images vector\n
+            parent : the array selected by the user\n
+            lamb (int) : the size of the total population (children + parent)
 
         Returns :
-            array containing <lambda> vectors from encoded pictures
+            array containing lamb vectors from encoded pictures
 
         Example :
             >>> len(new_population(population, population[0], 4))
@@ -207,7 +207,6 @@ def new_population (pop, parent, lambda_) :
 
 
 if __name__=="__main__":
-<<<<<<< HEAD
 
     #before the initial sample
     import numpy as np                   # advanced math library
@@ -231,10 +230,10 @@ if __name__=="__main__":
 
     import doctest
     doctest.testmod(verbose=True)
-=======
+
     #import doctest
     #doctest.testmod(verbose=True)
->>>>>>> aa8e46fd7683843cb1ffee3e22f65854645fe6da
+
 
     decoder = load_model("decodeur.h5")
     encoded_imgs=np.load("img_female_old_straight.csv.npy")

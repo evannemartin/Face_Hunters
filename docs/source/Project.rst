@@ -1,10 +1,8 @@
 Project package
 ===============
 
-Submodules
-----------
 
-Project.AutoEncoder module
+AutoEncoder module
 --------------------------
 
 .. automodule:: AutoEncoder
@@ -12,7 +10,7 @@ Project.AutoEncoder module
    :undoc-members:
    :show-inheritance:
 
-Project.evolutionary module
+evolutionary module
 ---------------------------
 
 .. automodule:: evolutionary
@@ -20,7 +18,7 @@ Project.evolutionary module
    :undoc-members:
    :show-inheritance:
 
-Project.filter\_data module
+filter\_data module
 ---------------------------
 
 .. automodule:: filter_data
@@ -28,7 +26,7 @@ Project.filter\_data module
    :undoc-members:
    :show-inheritance:
 
-Project.interface module
+interface module
 ------------------------
 
 .. automodule:: interface
@@ -36,18 +34,10 @@ Project.interface module
    :undoc-members:
    :show-inheritance:
 
-Project.main module
+main module
 -------------------
 
 .. automodule:: main
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: Project
    :members:
    :undoc-members:
    :show-inheritance:
