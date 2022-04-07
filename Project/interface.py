@@ -1,27 +1,9 @@
-import tkinter
-import numpy as np
-import pandas as pds
-import matplotlib.pyplot as plt
-from PIL import ImageTk, Image
-import random
-import evolutionary
-import os
-from keras.models import load_model
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
-
-
-decoder = load_model("decodeur.h5")
-
-
-
-### CHOOSE CHARACTERISTICS
-characteristics={"woman":False,"man":False,"young":False,"old":False,"beard":False,"no_beard":False,"straight":False,"no_straight":False}
-print(characteristics)
 
 def initialize() :
     for cle, valeur in characteristics.items() :
         characteristics[cle]=False
     print(characteristics)
+
 
 def onClick(event):
     for c in myWindow.winfo_children():
@@ -343,27 +325,51 @@ def found_agressor(photo):
 
 
 
+if __name__=="__main__" :
+
+    #originally was before function1
+    import tkinter
+    import numpy as np
+    import pandas as pds
+    import matplotlib.pyplot as plt
+    from PIL import ImageTk, Image
+    import random
+    import evolutionary
+    import os
+    from keras.models import load_model
+    os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+
+
+    decoder = load_model("decodeur.h5")
 
 
 
-#First Window
-
-myWindow=tkinter.Tk()
-myWindow.geometry("1000x600")
-myWindow['bg']='white'
-
-Frame=tkinter.Frame(myWindow,borderwidth=3, relief='groove')
-Frame.pack(side='top', padx=10, pady=10,expand="yes",fill="both")
-title= tkinter.Label(Frame,text='Project 4BIM',font=(20))
-title.place(relx=0.5, rely=0.25, anchor="center")
-
-descLabel=tkinter.Label(Frame, text='This is an application developped by 4BIM INSA students to help you create a robot portait of your agressor. ')
-descLabel.place(relx=0.5, rely=0.5, anchor="center")
-#descLabel.pack()
-
-myButton=tkinter.Button(Frame,text='Start !', width=50, bg="yellow")
-myButton.place(relx=0.5, rely=0.75, anchor="center")
-myButton.bind('<ButtonRelease-1>',onClick)
+    ### CHOOSE CHARACTERISTICS
+    characteristics={"woman":False,"man":False,"young":False,"old":False,"beard":False,"no_beard":False,"straight":False,"no_straight":False}
+    print(characteristics)
 
 
-myWindow.mainloop()
+
+
+
+    #First Window
+
+    myWindow=tkinter.Tk()
+    myWindow.geometry("1000x600")
+    myWindow['bg']='white'
+
+    Frame=tkinter.Frame(myWindow,borderwidth=3, relief='groove')
+    Frame.pack(side='top', padx=10, pady=10,expand="yes",fill="both")
+    title= tkinter.Label(Frame,text='Project 4BIM',font=(20))
+    title.place(relx=0.5, rely=0.25, anchor="center")
+
+    descLabel=tkinter.Label(Frame, text='This is an application developped by 4BIM INSA students to help you create a robot portait of your agressor. ')
+    descLabel.place(relx=0.5, rely=0.5, anchor="center")
+    #descLabel.pack()
+
+    myButton=tkinter.Button(Frame,text='Start !', width=50, bg="yellow")
+    myButton.place(relx=0.5, rely=0.75, anchor="center")
+    myButton.bind('<ButtonRelease-1>',onClick)
+
+
+    myWindow.mainloop()
