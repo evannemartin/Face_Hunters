@@ -64,6 +64,19 @@ def filter(path):
 
 
 def split_encoded_images(encoder, csv_file):
+
+    """
+    This function creates a file containing encoded vectors of images with the same caracteristics.
+
+    Args :
+        encoder : encoder loaded from file "encodeur.h5"
+        csv_file : path to the csv file containing the listed pictures with the same caracteristics
+
+    Returns :
+        None
+
+    """
+
     f=open(csv_file)
     csv_f = csv.reader(f)
     list_ref=[]
@@ -75,7 +88,7 @@ def split_encoded_images(encoder, csv_file):
 
     original_images=[]
     data_path="../database/img_align_celeba/img_align_celeba/"
-    for file in list_ref[1:2001]:
+    for file in list_ref[1:1001]:
             chemin= data_path + file
             im = image.imread(chemin)
             resized_img = resize(im,(128,128))
@@ -94,8 +107,8 @@ if __name__=="__main__" :
     #filter('../database/list_attr_celeba.csv')
     #db = pds.read_csv('female_young_wavy.csv', sep=",")
     #print(db["image_id"][0])
-    split_encoded_images(encoder, "male_young_nobeard.csv")
-    vecteur=np.load("img_male_young_nobeard.csv.npy")
+    split_encoded_images(encoder, "female_young_straight.csv")
+    vecteur=np.load("img_female_young_straight.csv.npy")
     print(len(vecteur))
     print(len(vecteur[0]))
 
