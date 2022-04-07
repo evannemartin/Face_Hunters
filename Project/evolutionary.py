@@ -1,18 +1,4 @@
-import numpy as np                   # advanced math library
-import matplotlib.pyplot as plt      # plotting routines
-import random
-#import tensorflow as tf
-#from tensorflow import keras
-#import h5py
-import os
-#import cv2
-from PIL import Image
-import scipy.misc
 
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
-
-# UPLOAD THE DECODER :
-from keras.models import load_model
 #decodeur=np.save(".../decodeur.h5",x[0])
 
 #allow_pickle=True
@@ -37,7 +23,7 @@ from keras.models import load_model
 #print(population[1].shape)
 
 #Next, we will maximise the distance between the first sample that we'll show the victim
-sample_size=10
+
 
 def initial_sample(pop, sample_size):
     """This function allows to select the first 10 pictures that are going to be shown to the victim in round 1, while maximising the difference between them.
@@ -142,6 +128,27 @@ def new_population (pop, parent, lambda_) :
 
 
 if __name__=="__main__":
+
+    #before the initial sample
+    import numpy as np                   # advanced math library
+    import matplotlib.pyplot as plt      # plotting routines
+    import random
+    #import tensorflow as tf
+    #from tensorflow import keras
+    #import h5py
+    import os
+    #import cv2
+    from PIL import Image
+    import scipy.misc
+
+    os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+
+    # UPLOAD THE DECODER :
+    from keras.models import load_model
+
+    sample_size=10
+    ##
+
     import doctest
     doctest.testmod(verbose=True)
 

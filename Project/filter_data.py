@@ -1,16 +1,3 @@
-import pandas as pds
-import numpy as np
-import csv
-from matplotlib import image
-from skimage.transform import resize
-import os
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
-
-# UPLOAD THE DECODER :
-from keras.models import load_model
-#decodeur=np.save(".../decodeur.h5",x[0])
-encoder = load_model("encodeur.h5")
-
 
 def filter(path):
     """
@@ -111,3 +98,18 @@ if __name__=="__main__" :
     vecteur=np.load("img_male_young_nobeard.csv.npy")
     print(len(vecteur))
     print(len(vecteur[0]))
+
+    #before path function
+
+    import pandas as pds
+    import numpy as np
+    import csv
+    from matplotlib import image
+    from skimage.transform import resize
+    import os
+    os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+
+    # UPLOAD THE DECODER :
+    from keras.models import load_model
+    #decodeur=np.save(".../decodeur.h5",x[0])
+    encoder = load_model("encodeur.h5")
