@@ -86,11 +86,12 @@ def initial_sample(pop, sample_size):
 #evolutionary strategies are for small population (not cross-over but gaussian distribution)
 
 
-def new_population (pop, parent, lambda_) :
-    """ This function allows to mutate the parent's attributes using Gaussian distribution.
+def cross_over(pop, parent, lambda_):
+    """ This function allows to cross-over the selected parent with random other images with the same characteristics (sex, age and hair/beard wise).
         It returns a new population of mutated vectors while keeping the parent.
 
         Args :
+            pop : encoded images vector of the whole database
             parent: the array selected by the user
             lambda_ (int): the size of the total population (children + parent)
 
@@ -98,15 +99,93 @@ def new_population (pop, parent, lambda_) :
             array containing <lambda> vectors from encoded pictures
 
         Example :
-            >>> len(new_population(population[0], 4))
+            >>> len(cross_over(population, population[0], 4))
             4
-            >>> population[0] in new_population(population[0], 4)
+            >>> population[0] in cross-over(population[0], 4)
+            True
+    """
+
+    n_children = lambda_ -1
+    N = len(pop)
+    cross_index = np.random.choice(range(N), n_children)    # sélectionne 3 index au hasard dans notre base de données
+    #print(cross_index)
+    crossed = [parent]
+    for i in cross_index:
+        child=[]
+        for j in range (len(parent)):
+            child.append(np.mean([parent[j],pop[i][j]])) # on fait la moyenne pour chaque attribut entre le vecteur parent et le vecteur choisi aléatoirement
+        crossed.append(child)
+    return np.asarray(crossed)
+
+
+def mutation(pop):
+    """ This function allows to mutate the picture's attributes using Gaussian distribution.
+        It returns a new population of mutated vectors.
+
+        Args :
+            pop : encoded images vector to mute
+
+        Returns :
+            nparray containing modified vectors from encoded pictures
+
+    """
+    std=pop.std(axis=0)
+    N = len(pop)
+    for i in range(len(pop)):
+        random_value=np.random.normal(0,1)  #pour chaque enfant on choisi alpha
+        for j in range(len(pop[i])):
+            pop[i][j]+=random_value*std[i]
+    return pop
+
+
+def get_children_from_parent(pop, parent, lambda_):
+    """ This function allows to cross-over the parent pictures with other pictures and mutate the result picture to add diversity.
+        It returns a new population of mutated vectors.
+
+        Args :
+            pop : encoded images vector of the whole database
+            parent: the array selected by the user
+            lambda_ (int): the size of the total population (children + parent)
+
+        Returns :
+            array containing <lambda> vectors from encoded pictures
+    """
+    children=cross_over(pop, parent, lambda_)
+    mutated_children=mutation(children)
+    return mutated_children
+
+
+
+
+
+
+def new_population (pop, parent, lambda_) :
+    """ This function allows to mutate the parent's attributes using Gaussian distribution.
+        It returns a new population of mutated vectors while keeping the parent.
+
+        Args :
+            pop : encoded images vector
+            parent : the array selected by the user
+            lambda_ (int) : the size of the total population (children + parent)
+
+        Returns :
+            array containing <lambda> vectors from encoded pictures
+
+        Example :
+            >>> len(new_population(population, population[0], 4))
+            4
+            >>> population[0] in new_population(population, population[0], 4)
             True
 
 
     """
+
+
     n_children = lambda_ -1 #lambda size of population
     children=[parent]
+
+
+
     std=pop.std(axis=0)          # on a besoin de la dernière population pour obtenir les std
 
     j=0
@@ -142,38 +221,66 @@ def new_population (pop, parent, lambda_) :
 
 
 if __name__=="__main__":
-    import doctest
-    doctest.testmod(verbose=True)
+    #import doctest
+    #doctest.testmod(verbose=True)
 
     decoder = load_model("decodeur.h5")
     encoded_imgs=np.load("img_female_old_straight.csv.npy")
 
-    pop=initial_sample(encoded_imgs, sample_size) #encoded_imgs from the database which
+    #pop=initial_sample(encoded_imgs, sample_size) #encoded_imgs from the database which
     #print(pop.shape)
 
 
 
 ## Montrer la population initiale
-    plt.figure(figsize=(20, 4))
-    sample_decoded_imgs = decoder.predict(pop)
-    for i in range (len(pop)):
-        ax = plt.subplot(1, len(pop), i + 1 )
-        plt.imshow(sample_decoded_imgs[i].reshape(128,128,3))
-        ax.get_xaxis().set_visible(False)
-        ax.get_yaxis().set_visible(False)
-    plt.show()
+    # plt.figure(figsize=(20, 4))
+    # sample_decoded_imgs = decoder.predict(pop)
+    # for i in range (len(pop)):
+    #     ax = plt.subplot(1, len(pop), i + 1 )
+    #     plt.imshow(sample_decoded_imgs[i].reshape(128,128,3))
+    #     ax.get_xaxis().set_visible(False)
+    #     ax.get_yaxis().set_visible(False)
+    # plt.show()
 
 
 ## Montrer enfants
-    new_pop=new_population(pop, pop[0],4) #pop is the database choose by the user
-    children_decoded_imgs = decoder.predict(new_pop)
-    print(type(children_decoded_imgs))
-    for i in range (len(new_pop)):
-        ax = plt.subplot(1, len(new_pop), i + 1 )
-        plt.imshow(children_decoded_imgs[i].reshape(128,128,3))
-        #name='children/child'+str(i)+'.png'
-        #im_rgb = cv2.cvtColor(255*children_decoded_imgs[i], cv2.COLOR_BGR2RGB)
+    # new_pop=new_population(pop, pop[0],4) #pop is the database choose by the user
+    # children_decoded_imgs = decoder.predict(new_pop)
+    # print(type(children_decoded_imgs))
+    # for i in range (len(new_pop)):
+    #     ax = plt.subplot(1, len(new_pop), i + 1 )
+    #     plt.imshow(children_decoded_imgs[i].reshape(128,128,3))
+    # plt.show()
 
-        #Image.fromarray(im_rgb).save()
-        #cv2.imwrite(name, im_rgb)
+########
+            #name='children/child'+str(i)+'.png'
+            #im_rgb = cv2.cvtColor(255*children_decoded_imgs[i], cv2.COLOR_BGR2RGB)
+
+            #Image.fromarray(im_rgb).save()
+            #cv2.imwrite(name, im_rgb)
+########
+
+
+## Crossing cross_over
+    children=cross_over(encoded_imgs, encoded_imgs[50], 4)
+    children_decoded = decoder.predict(children)
+    for i in range (len(children)):
+        ax = plt.subplot(1, len(children), i + 1 )
+        plt.imshow(children_decoded[i].reshape(128,128,3))
+    plt.show()
+
+    mutated_children=mutation(children)
+    children_decoded2 = decoder.predict(mutated_children)
+    for i in range (len(children)):
+        ax = plt.subplot(1, len(children), i + 1 )
+        plt.imshow(children_decoded2[i].reshape(128,128,3))
+        plt.title("Mutated")
+    plt.show()
+
+
+    x=get_children_from_parent(encoded_imgs, encoded_imgs[134], 4)
+    decoded_x=decoder.predict(x)
+    for i in range (len(x)):
+        ax = plt.subplot(1, len(x), i + 1 )
+        plt.imshow(decoded_x[i].reshape(128,128,3))
     plt.show()
