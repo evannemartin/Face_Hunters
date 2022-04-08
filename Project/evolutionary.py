@@ -91,7 +91,7 @@ def cross_over(pop, parent, lamb):
             True
     """
 
-    n_children = lambda_ -1
+    n_children = lamb -1
     N = len(pop)
     cross_index = np.random.choice(range(N), n_children)    # sélectionne 3 index au hasard dans notre base de données
     #print(cross_index)
@@ -136,7 +136,7 @@ def get_children_from_parent(pop, parent, lamb):
         Returns :
             array containing lamb vectors from encoded pictures
     """
-    children=cross_over(pop, parent, lambda_)
+    children=cross_over(pop, parent, lamb)
     mutated_children=mutation(children)
     return mutated_children
 
@@ -167,7 +167,7 @@ def new_population (pop, parent, lamb) :
     """
 
 
-    n_children = lambda_ -1 #lambda size of population
+    n_children = lamb -1 #lambda size of population
     children=[parent]
 
 

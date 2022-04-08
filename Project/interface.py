@@ -128,21 +128,21 @@ def sex_characteristics(event):
 #base de données correspondant aux critères
 def choice_database(char):
     if char["woman"] and char["young"] and char["straight"]:
-        return 'img_female_young_straight.csv.npy'
+        return 'images/img_female_young_straight.csv.npy'
     if char["woman"] and char["young"] and char["no_straight"]:
-        return 'img_female_young_wavy.csv.npy'
+        return 'images/img_female_young_wavy.csv.npy'
     if char["woman"] and char["old"] and char["straight"]:
-        return 'img_female_old_straight.csv.npy'
+        return 'images/img_female_old_straight.csv.npy'
     if char["woman"] and char["old"] and char["no_straight"]:
-        return 'img_female_old_wavy.csv.npy'
+        return 'images/img_female_old_wavy.csv.npy'
     if char["man"] and char["young"] and char["beard"]:
-        return 'img_male_young_beard.csv.npy'
+        return 'images/img_male_young_beard.csv.npy'
     if char["man"] and char["young"] and char["no_beard"]:
-        return 'img_male_young_nobeard.csv.npy'
+        return 'images/img_male_young_nobeard.csv.npy'
     if char["man"] and char["old"] and char["beard"]:
-        return 'img_male_old_beard.csv.npy'
+        return 'images/img_male_old_beard.csv.npy'
     if char["man"] and char["old"] and char["no_beard"]:
-        return 'img_male_old_nobeard.csv.npy'
+        return 'images/img_male_old_nobeard.csv.npy'
 
 #choix d'une image dans la base choisie
 # def choice_image(database) :
@@ -340,7 +340,7 @@ if __name__=="__main__" :
     os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 
-    decoder = load_model("decodeur.h5")
+    decoder = load_model("model/decodeur.h5")
 
 
 
