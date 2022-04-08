@@ -33,11 +33,3 @@ interface module
    :members:
    :undoc-members:
    :show-inheritance:
-
-main module
--------------------
-
-.. automodule:: main
-   :members:
-   :undoc-members:
-   :show-inheritance:

@@ -1,8 +1,27 @@
+import tkinter
+import numpy as np
+import pandas as pds
+import matplotlib.pyplot as plt
+from PIL import ImageTk, Image
+import random
+import evolutionary
+import os
+from keras.models import load_model
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+
+decoder = load_model("model/decodeur.h5")
+
+
+
+### CHOOSE CHARACTERISTICS
+characteristics={"woman":False,"man":False,"young":False,"old":False,"beard":False,"no_beard":False,"straight":False,"no_straight":False}
+#print(characteristics )
+
 
 def initialize() :
     for cle, valeur in characteristics.items() :
         characteristics[cle]=False
-    print(characteristics)
+    #print(characteristics)
 
 
 def onClick(event):
@@ -40,11 +59,6 @@ def onClick(event):
     oButton.pack(side='right', padx=5, pady=5)
     oButton.bind('<Button-1>', oevent)
 
-
-    # #to clear the characteristics is there is an error
-    # myButton=tkinter.Button(myWindow,text='Missclicking ? Do It Again !', width=50, bg="yellow")
-    # myButton.pack(padx=20, pady=20, fill="x")
-    # myButton.bind('<ButtonRelease-1>',onClick)
 
     #show a new window to propose some pictures depending on the characteristics
     myButton=tkinter.Button(myWindow,text='Next', width=50, bg="yellow", font=(1))
@@ -144,21 +158,6 @@ def choice_database(char):
     if char["man"] and char["old"] and char["no_beard"]:
         return 'images/img_male_old_nobeard.csv.npy'
 
-#choix d'une image dans la base choisie
-# def choice_image(database) :
-#     db = pds.read_csv(database, sep=",")
-#     #print(len(db))
-#     list_im=[]
-#     list_ind=[]
-#     for i in range(10):
-#         ind=random.randint(0,len(db)-1)
-#         while ind in list_ind : #so it shows distinct pictures
-#             ind=random.randint(0,len(database)-1)
-#         print(ind)
-#         list_im.append(db["image_id"][ind])
-#         list_ind.append(ind)
-#
-#     return list_im
 
 ##PRESENTATION DE LA POPULATION INITIAL
 
@@ -180,27 +179,16 @@ def inital_population(event):
 
     photo=[]
     for i in range (len(pop0_decoded_imgs)) :
-        #photo.append(_photo_image(pop0_decoded_imgs[i]))
+
         plt.imsave("img", pop0_decoded_imgs[i].reshape(128,128,3), format="png")
         photo.append(ImageTk.PhotoImage(Image.open("img")))
-        # imLab2=tkinter.Label(myWindow,image=photo[i])
-        # imLab2.pack(padx=5,pady=5, side="left")
-        # imLab2.bind('<Button-1>', chooseimage(event))
 
-    #canv = tkinter.Canvas(myWindow, width=80, height=80, bg='white')
-    #canv.grid(row=2, column=
-    #chooseBtn=canv.create_image(0.5, 0.5, image=photo)
 
     for i in range(5):
         myWindow.columnconfigure(i, weight=1)
 
     myWindow.rowconfigure(1, weight=1)
 
-    # cadre=tkinter.Frame(myWindow)
-    # cadre.pack(side="left")
-    #
-    # cadrebis=tkinter.Frame(myWindow)
-    # cadrebis.pack(side="bottom")
 
     imLab1=tkinter.Label(myWindow,image=photo[0])
     imLab1.grid(row=1, column=0)
@@ -326,28 +314,6 @@ def found_agressor(photo):
 
 
 if __name__=="__main__" :
-
-    #originally was before function1
-    import tkinter
-    import numpy as np
-    import pandas as pds
-    import matplotlib.pyplot as plt
-    from PIL import ImageTk, Image
-    import random
-    import evolutionary
-    import os
-    from keras.models import load_model
-    os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
-
-
-    decoder = load_model("model/decodeur.h5")
-
-
-
-    ### CHOOSE CHARACTERISTICS
-    characteristics={"woman":False,"man":False,"young":False,"old":False,"beard":False,"no_beard":False,"straight":False,"no_straight":False}
-    print(characteristics)
-
 
 
 
