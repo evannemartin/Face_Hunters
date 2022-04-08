@@ -49,7 +49,7 @@ def cross_over(pop, parent, lamb):
     for i in cross_index:
         child=[]
         for j in range (len(parent)):
-            child.append(np.mean([parent[j],pop[i][j]])) # on fait la moyenne pour chaque attribut entre le vecteur parent et le vecteur choisi aléatoirement
+            child.append(np.average([parent[j],pop[i][j]], weights=[0.4,0.6])) # on fait la moyenne pour chaque attribut entre le vecteur parent et le vecteur choisi aléatoirement
         crossed.append(child)
     return np.asarray(crossed)
 
