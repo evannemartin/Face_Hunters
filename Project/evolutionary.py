@@ -67,9 +67,9 @@ def mutation(pop):
     """
     std=pop.std(axis=0)
     N = len(pop)
-    for i in range(len(pop)):
+    for i in range(1,len(pop)):
         random_value=np.random.normal(0,1)  #pour chaque enfant on choisi alpha
-        for j in range(len(pop[i])):
+        for j in range(1,len(pop[i])):
             pop[i][j]+=random_value*std[i]
     return pop
 
