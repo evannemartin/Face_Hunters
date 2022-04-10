@@ -371,12 +371,12 @@ if __name__=="__main__" :
     #descLabel.pack()
 
     emoji1 = ImageTk.PhotoImage(file = "detective_fem.jpg")
-    tkinter.Label(Frame,image=emoji1).place(relx=0.4, rely=0.655, anchor="center")
+    tkinter.Label(Frame,image=emoji1).place(relx=0.4, rely=0.7, anchor="center")
     emoji2 = ImageTk.PhotoImage(file = "detective_hom.png")
-    tkinter.Label(Frame,image=emoji2).place(relx=0.6, rely=0.65, anchor="center")
+    tkinter.Label(Frame,image=emoji2).place(relx=0.6, rely=0.7, anchor="center")
 
     myButton=tkinter.Button(Frame,text='Start !', font=(10), width=50, bg="LightSteelBlue4")
-    myButton.place(relx=0.5, rely=0.8, anchor="center")
+    myButton.place(relx=0.5, rely=0.9, anchor="center")
     myButton.bind('<ButtonRelease-1>',onClick)
 
 
