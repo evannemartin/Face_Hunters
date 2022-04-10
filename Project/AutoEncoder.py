@@ -1,6 +1,6 @@
 def cut_list(list, length):
     """ This function allows to cut a list into parts of a certain length.
-        It returns a new list wich takes less memory and contains fo each index a part of the initial list.
+        It returns a new list which takes less memory and contains for each index a part of the initial list.
 
         Args :
             list : list of the images path of the whole database\n

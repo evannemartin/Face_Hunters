@@ -72,11 +72,11 @@ def filter(path):
 def split_encoded_images(encoder, csv_file):
 
     """
-    This function creates a file containing encoded vectors of images with the same caracteristics.
+    This function creates a file containing encoded vectors of images with the same characteristics.
 
     Args :
-        encoder : encoder loaded from file "encodeur.h5"
-        csv_file : path to the csv file containing the listed pictures with the same caracteristics
+        encoder : encoder loaded from file "encodeur.h5"\n
+        csv_file : path to the csv file containing the listed pictures with the same characteristics
 
     Returns :
         None

@@ -26,9 +26,9 @@ def initialize() :
 
 def onClick(event):
 
-        """ This function allows to generate a new interface to ask and store the characteristics of the agressor.
+    """ This function allows to generate a new interface to ask and store the characteristics of the agressor.
 
-        """
+    """
 
     for c in myWindow.winfo_children():
         c.destroy()
@@ -120,7 +120,7 @@ def nsevent(event):
     characteristics["straight"]=False
 
 def sex_characteristics(event):
-    """This function is for asking the characteristic for each gender.
+    """This function is for asking the characteristic regarding to the gender.
        'beard' or 'no beard' for man and 'straight hair' or 'wavy hair' for woman.
     """
     if characteristics["man"]==True:
@@ -168,10 +168,10 @@ def choice_database(char):
     """This function is for returning the images according to the user's selection.
 
         Args :
-            char : characteristic for the aggressor.
+            char : dictionary of characteristics for the aggressor.
 
         Returns :
-            returns the vector according to the user's selection.
+            returns the vector of encoded images according to the user's selection.
     """
     if char["woman"] and char["young"] and char["straight"]:
         return 'images/img_female_young_straight.csv.npy'
@@ -195,7 +195,7 @@ def choice_database(char):
 
 
 def reselect(event) :
-    """This function is about asking the user for selecting the gender or characteristic when he/she did not clicked the button.
+    """This function is about asking the user for selecting the characteristic again because he/she did not click on a button so the data is missing.
     """
     for c in myWindow.winfo_children():
         c.destroy()
@@ -296,8 +296,8 @@ def chooseimage(pop, parent, nb_children) :
     """This function generates a new interface for asking the user whether he/she recognizes the suspects.
 
         Args :
-            pop : array of the encoded images\n
-            parent : selected array of the encoded image chosen by the user\n
+            pop : encoded images vector\n
+            parent : the array selected by the user\n
             nb_children(int) : the number of children generated from the parent\n
 
         Returns :
@@ -349,8 +349,8 @@ def break_time(pop, parent, nb_children):
        The user can have the break time whenever he/she wants it.
 
        Args:
-            pop : array of the encoded images\n
-            parent : selected array of the encoded image chosen by the user\n
+            pop : encoded images vector\n
+            parent : the array selected by the user\n
             nb_children(int) : the number of children generated from the parent\n
 
        Returns:
@@ -377,10 +377,10 @@ def end_or_continue(photo, pop, parent, nb_children):
     """This function generates a new interface for asking the user whether he/she found the suspect.
         It also asks the user if he/she wants other pictures of suspects.
 
-        Arg :
-            photo : photo of the selected parent
-            pop : array of the encoded images\n
-            parent : selected array of the encoded image chosen by the user\n
+        Args :
+            photo : photo of the selected parent\n
+            pop : encoded images vector\n
+            parent : the array selected by the user\n
             nb_children(int) : the number of children generated from the parent\n
 
         Returns :

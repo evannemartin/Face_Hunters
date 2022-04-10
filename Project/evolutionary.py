@@ -75,7 +75,7 @@ def mutation(pop):
 
 
 def get_children_from_parent(pop, parent, lamb):
-    """ This function allows to cross-over the parent pictures with other pictures and mutate the result picture to add diversity.
+    """ This function allows to cross-over the parent pictures with other pictures and mutate the children to add diversity.
         It returns a new population of mutated vectors.
 
         Args :
