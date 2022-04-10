@@ -1,4 +1,16 @@
 def cut_list(list, length):
+    """ This function allows to cut a list into parts of a certain length.
+        It returns a new list wich takes less memory and contains fo each index a part of the initial list.
+
+        Args :
+            list : list of the images path of the whole database\n
+            length (int): the length of the parts\n
+
+        Returns :
+            list containing the images path cut by parts of <length>
+
+    """
+
     listing_parts = []
     intervalle_0 = 0
     intervalle_1 = length
@@ -9,6 +21,18 @@ def cut_list(list, length):
     return listing_parts
 
 def show_face_data(nparray, n=10, title=""):
+    """ This function allows to show the faces from a numpy array.
+
+        Args :
+            nparray : array containing the images \n
+            n (int): the number of images we want to plot (default=10)\n
+            title : the title of the plotted faces
+
+        Returns :
+            None
+
+    """
+
     plt.figure(figsize=(30, 5))
     for i in range(n):
         ax = plt.subplot(2,n,i+1)
