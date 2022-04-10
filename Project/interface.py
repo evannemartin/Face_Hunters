@@ -162,9 +162,11 @@ def choice_database(char):
 def reselect(event) :
     for c in myWindow.winfo_children():
         c.destroy()
-    tkinter.Label(myWindow,bg='LightSkyBlue3',text='A data is missing, please reselect',font=(10)).pack(padx=20,pady=20,fill="x")
+    mainFrame=tkinter.Frame(myWindow,bg='LightSkyBlue3',width=30, borderwidth=3, relief='groove')
+    mainFrame.pack(side='top', padx=30, pady=30,fill="x" )
+    tkinter.Label(mainFrame,bg='LightSkyBlue3',text='A data is missing, please reselect',font=(10)).pack(padx=40,pady=40,fill="x")
     myButton=tkinter.Button(myWindow,text='Reselect', width=50, bg="LightSkyBlue4",font=(10))
-    myButton.pack(padx=20, pady=20, fill="x")
+    myButton.place(relx=0.5, rely=0.5, anchor="center")
     myButton.bind('<ButtonRelease-1>',onClick)
 
 
@@ -319,13 +321,22 @@ def end_or_continue(photo, pop, parent, nb_children):
 def found_agressor(photo):
     for c in myWindow.winfo_children():
         c.destroy()
-    tkinter.Label(myWindow,bg='LightSkyBlue3',text='Portrait of the suspect',font=(10)).pack(padx=10,pady=10,fill="x")
+    Frame=tkinter.Frame(myWindow,borderwidth=3, relief='groove')
+    Frame.pack(side='top', padx=10, pady=20,expand="yes",fill="both")
+
     #place(relx=0.5, rely=0.1, anchor="center",fill='x')
 
-    imLab1=tkinter.Label(myWindow,image=photo)
-    imLab1.place(relx=.5,rely=.5, anchor="center")
+    imLab1=tkinter.Label(Frame,image=photo)
+    imLab1.place(relx=.5,rely=.6, anchor="center")
 
-    tkinter.Label(myWindow,text='Thank you for you collaboration !',font=(10)).pack(padx=10,pady=10,fill="x")
+    Frame1=tkinter.Frame(Frame,bg='LightSkyBlue3',borderwidth=1, relief='groove')
+    Frame1.pack( padx=10, pady=10,fill="x")
+    tkinter.Label(Frame1,bg='LightSkyBlue3',text='Portrait of the suspect',font=(20)).pack(padx=10,pady=10,fill="x")
+
+    tkinter.Label(Frame,text='Thank you for your collaboration !',font=(10)).pack(padx=10,pady=10,fill="x")
+    global emoji
+    emoji = ImageTk.PhotoImage(file = "detective.png")
+    tkinter.Label(Frame,image=emoji).pack()
     #place(relx=0.5, rely=0.9, anchor="center",fill='x')
 
 
@@ -344,17 +355,28 @@ if __name__=="__main__" :
     myWindow.geometry("1000x700")
     myWindow['bg']='white'
 
+
+
+
     Frame=tkinter.Frame(myWindow,borderwidth=3, relief='groove')
     Frame.pack(side='top', padx=10, pady=20,expand="yes",fill="both")
-    title= tkinter.Label(Frame,text='Project 4BIM',font=(20))
-    title.place(relx=0.5, rely=0.25, anchor="center")
+    logo = ImageTk.PhotoImage(file = "logo_insa.png")
+    tkinter.Label(Frame,image=logo).pack()
 
-    descLabel=tkinter.Label(Frame, text='This is an application developped by 4BIM INSA students to help you create a robot portait of your agressor. ')
+    title= tkinter.Label(Frame,text='Project 4BIM',font=(20))
+    title.place(relx=0.5, rely=0.35, anchor="center")
+
+    descLabel=tkinter.Label(Frame, text='This is an application developped by 4BIM INSA students to help you create a robot portait of your agressor. \n The application will propose several faces, you just have to click on the photo to select it !  ')
     descLabel.place(relx=0.5, rely=0.5, anchor="center")
     #descLabel.pack()
 
-    myButton=tkinter.Button(Frame,text='Start !', width=50, bg="LightSteelBlue4")
-    myButton.place(relx=0.5, rely=0.75, anchor="center")
+    emoji1 = ImageTk.PhotoImage(file = "detective_fem.jpg")
+    tkinter.Label(Frame,image=emoji1).place(relx=0.4, rely=0.655, anchor="center")
+    emoji2 = ImageTk.PhotoImage(file = "detective_hom.png")
+    tkinter.Label(Frame,image=emoji2).place(relx=0.6, rely=0.65, anchor="center")
+
+    myButton=tkinter.Button(Frame,text='Start !', font=(10), width=50, bg="LightSteelBlue4")
+    myButton.place(relx=0.5, rely=0.8, anchor="center")
     myButton.bind('<ButtonRelease-1>',onClick)
 
 
