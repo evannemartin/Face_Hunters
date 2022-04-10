@@ -63,39 +63,58 @@ def onClick(event):
     myButton.bind('<ButtonRelease-1>',sex_characteristics)
 
 def fevent(event):
+    """This function is for choosing the gender which is 'woman' not 'man'.
+    """
+
     characteristics["woman"]=True
     characteristics["man"]=False
 
 def hevent(event):
+    """This function is for choosing the gender which is 'man' not 'woman'.
+    """
     characteristics["man"]=True
     characteristics["woman"]=False
 
 def yevent(event):
+    """This function is for choosing the age group which is 'young' not 'old'.
+    """
     characteristics["young"]=True
     characteristics["old"]=False
 
 def oevent(event):
+    """This function is for choosing the age group which is 'old' not 'young'.
+    """
     characteristics["old"]=True
     characteristics["young"]=False
 
 def bevent(event):
+    """This function is for choosing the characteristic for man which is 'beard' not 'no beard'.
+    """
     characteristics["beard"]=True
     characteristics["no_beard"]=False
 
 def nbevent(event):
+    """This function is for choosing the characteristic for man which is 'no beard' not 'beard'.
+    """
     characteristics["no_beard"]=True
     characteristics["beard"]=False
 
 def sevent(event):
+    """This function is for choosing the characteristic for woman which is 'straight hair' not 'wavy hair'.
+    """
     characteristics["straight"]=True
     characteristics["no_straight"]=False
 
 def nsevent(event):
+    """This function is for choosing the characteristic for woman which is 'wavy hair' not 'straight hair'.
+    """
     characteristics["no_straight"]=True
     characteristics["straight"]=False
 
 def sex_characteristics(event):
-
+    """This function is for asking the characteristic for each gender.
+       'beard' or 'no beard' for man and 'straight hair' or 'wavy hair' for woman.
+    """
     if characteristics["man"]==True:
         mainFrame=tkinter.Frame(myWindow,bg='LightSkyBlue3',width=30, borderwidth=3, relief='groove')
         mainFrame.pack(side='top', padx=30, pady=30,fill="x" )
@@ -138,6 +157,14 @@ def sex_characteristics(event):
 
 #base de données correspondant aux critères
 def choice_database(char):
+    """This function is for returning the images according to the user's selection.
+
+        Args :
+            char : characteristic for the aggressor.
+
+        Returns :
+            returns the vector according to the user's selection.
+    """
     if char["woman"] and char["young"] and char["straight"]:
         return 'images/img_female_young_straight.csv.npy'
     if char["woman"] and char["young"] and char["no_straight"]:
@@ -160,6 +187,8 @@ def choice_database(char):
 
 
 def reselect(event) :
+    """This function is about asking the user for selecting the gender or characteristic when he/she did not clicked the button.
+    """
     for c in myWindow.winfo_children():
         c.destroy()
     mainFrame=tkinter.Frame(myWindow,bg='LightSkyBlue3',width=30, borderwidth=3, relief='groove')
@@ -173,6 +202,8 @@ def reselect(event) :
 ##PRESENTATION DE LA POPULATION INITIAL
 
 def inital_population(event):
+    """This function is for showing the initial 10 pictures of the suspects according to the user's choice.
+    """
     database=choice_database(characteristics)
     if database == None:
         print('Im in none')
@@ -254,6 +285,16 @@ def inital_population(event):
 ###### PRESENT CHILDREN
 
 def chooseimage(pop, parent, nb_children) :
+    """This function generates a new interface for asking the user whether he/she recognizes the suspects.
+
+        Args :
+            pop : array of the encoded images\n
+            parent : selected array of the encoded image chosen by the user\n
+            nb_children(int) : the number of children generated from the parent\n
+
+        Returns :
+            None
+    """
     for c in myWindow.winfo_children():
         c.destroy()
     tkinter.Label(myWindow,bg='LightSkyBlue3',text='Do you recognise one of the suspects ?',font=(10)).pack(padx=10,pady=10,fill="x")
@@ -296,6 +337,18 @@ def chooseimage(pop, parent, nb_children) :
     myWindow.mainloop()
 
 def break_time(pop, parent, nb_children):
+    """This function offers the user a break time with a peaceful picture wtih cute Koala.
+       The user can have the break time whenever he/she wants it.
+
+       Args:
+            pop : array of the encoded images\n
+            parent : selected array of the encoded image chosen by the user\n
+            nb_children(int) : the number of children generated from the parent\n
+
+       Returns:
+            None
+    """
+
     for c in myWindow.winfo_children():
         c.destroy()
     Frame=tkinter.Frame(myWindow,borderwidth=3, relief='groove')
@@ -313,6 +366,18 @@ def break_time(pop, parent, nb_children):
 ### End loop or continue
 
 def end_or_continue(photo, pop, parent, nb_children):
+    """This function generates a new interface for asking the user whether he/she found the suspect.
+        It also asks the user if he/she wants other pictures of suspects.
+
+        Arg :
+            photo : photo of the selected parent
+            pop : array of the encoded images\n
+            parent : selected array of the encoded image chosen by the user\n
+            nb_children(int) : the number of children generated from the parent\n
+
+        Returns :
+            None
+    """
 
     for c in myWindow.winfo_children():
         c.destroy()
