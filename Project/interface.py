@@ -128,7 +128,7 @@ def sex_characteristics(event):
         sButton.pack(side='left', padx=5, pady=5)
         sButton.bind('<Button-1>', sevent)
 
-        nsButton=tkinter.Radiobutton(Frame4,text="No Straight Hair",variable=value, value=2)
+        nsButton=tkinter.Radiobutton(Frame4,text="Wavy Hair",variable=value, value=2)
         nsButton.pack(side='right', padx=5, pady=5)
         nsButton.bind('<Button-1>', nsevent)
 
@@ -289,8 +289,26 @@ def chooseimage(pop, parent, nb_children) :
     imLab4.place(relx=0.7, rely=0.65, anchor="center")
     imLab4.bind('<Button-1>', lambda event, photo=photo[3], pop=pop, parent=new_pop[3], nb_children=4: end_or_continue(photo, pop, parent, nb_children))
 
+    pause=tkinter.Button(myWindow,text='Need a break ?', width=30, bg='LightSkyBlue4', font=(1))
+    pause.place(relx=0.5, rely=0.9, anchor="center")
+    pause.bind('<Button-1>', lambda event, pop=pop, parent=parent, nb_children=4: break_time(pop, parent, nb_children))
+
     myWindow.mainloop()
 
+def break_time(pop, parent, nb_children):
+    for c in myWindow.winfo_children():
+        c.destroy()
+    Frame=tkinter.Frame(myWindow,borderwidth=3, relief='groove')
+    Frame.pack(side='top', padx=10, pady=20,expand="yes",fill="both")
+
+        #place(relx=0.5, rely=0.1, anchor="center",fill='x')
+
+    global impause
+    impause = ImageTk.PhotoImage(file = "reposant.jpg")
+    tkinter.Label(Frame,image=impause).pack()
+    continuebutton=tkinter.Button(Frame,text='Continue', width=30, bg='LightSkyBlue4', font=(1))
+    continuebutton.place(relx=0.5, rely=0.85, anchor="center")
+    continuebutton.bind('<ButtonRelease-1>', lambda event, pop=pop, parent=parent, nb_children=4 : chooseimage(pop, parent, nb_children))
 
 ### End loop or continue
 
@@ -363,10 +381,10 @@ if __name__=="__main__" :
     logo = ImageTk.PhotoImage(file = "logo_insa.png")
     tkinter.Label(Frame,image=logo).pack()
 
-    title= tkinter.Label(Frame,text='Project 4BIM',font=(20))
+    title= tkinter.Label(Frame,text='Face Hunters',font=(20))
     title.place(relx=0.5, rely=0.35, anchor="center")
 
-    descLabel=tkinter.Label(Frame, text='This is an application developped by 4BIM INSA students to help you create a robot portait of your agressor. \n The application will propose several faces, you just have to click on the photo to select it !  ')
+    descLabel=tkinter.Label(Frame, text='This is an application developped by 4BIM INSA students to help you create a robot portrait of your agressor. \n We will show you several faces, you just have to click on the photo to select it !  ')
     descLabel.place(relx=0.5, rely=0.5, anchor="center")
     #descLabel.pack()
 
