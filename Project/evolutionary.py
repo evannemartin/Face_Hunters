@@ -37,7 +37,7 @@ def cross_over(pop, parent, lamb):
         Example :
             >>> len(cross_over(population, population[0], 4))
             4
-            >>> population[0] in cross-over(population[0], 4)
+            >>> population[0] in cross-over(population,population[0], 4)
             True
     """
 

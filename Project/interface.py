@@ -16,12 +16,20 @@ characteristics={"woman":False,"man":False,"young":False,"old":False,"beard":Fal
 
 
 def initialize() :
+    """ This function allows to put all the agressor's characteristics to 'False'.
+
+    """
     for cle, valeur in characteristics.items() :
         characteristics[cle]=False
     #print(characteristics)
 
 
 def onClick(event):
+
+        """ This function allows to generate a new interface to ask and store the characteristics of the agressor.
+
+        """
+
     for c in myWindow.winfo_children():
         c.destroy()
     initialize()
@@ -402,6 +410,15 @@ def end_or_continue(photo, pop, parent, nb_children):
 ### CRIMINAL FOUND
 
 def found_agressor(photo):
+    """ This function allows to generate the final interface showing the robot portrait of the agressor.
+
+    Args :
+        photo : the photo of the agressor\n
+
+    Returns :
+        None
+
+    """
     for c in myWindow.winfo_children():
         c.destroy()
     Frame=tkinter.Frame(myWindow,borderwidth=3, relief='groove')
