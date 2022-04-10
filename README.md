@@ -28,3 +28,15 @@ Go into the face_hunters folder and execute the module interface.py.
 cd PATH/face_hunters
 python interface.py
 ```
+
+## Documentation
+
+The documentation is accessible through the face_hunters folder :
+```sh
+cd PATH/face_hunters
+browsername Documentation.html
+```
+
+## Github
+
+You can also find our software and interactive documentation on https://github.com/lucieschwoertzig/4BIM_Project
