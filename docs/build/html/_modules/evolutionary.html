@@ -1,0 +1,237 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>evolutionary &#8212; 4BIM_Project 1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for evolutionary</h1><div class="highlight"><pre>
+<span></span><span class="c1">#before the initial sample</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>                   <span class="c1"># advanced math library</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>      <span class="c1"># plotting routines</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="c1">#import tensorflow as tf</span>
+<span class="c1">#from tensorflow import keras</span>
+<span class="c1">#import h5py</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="c1">#import cv2</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">import</span> <span class="nn">scipy.misc</span>
+
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;TF_CPP_MIN_LOG_LEVEL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;2&#39;</span>
+
+<span class="c1"># UPLOAD THE DECODER :</span>
+<span class="kn">from</span> <span class="nn">keras.models</span> <span class="kn">import</span> <span class="n">load_model</span>
+
+<span class="n">sample_size</span><span class="o">=</span><span class="mi">10</span>
+<span class="c1">##</span>
+
+<span class="kn">import</span> <span class="nn">doctest</span>
+<span class="n">doctest</span><span class="o">.</span><span class="n">testmod</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="cross_over"><a class="viewcode-back" href="../Project.html#evolutionary.cross_over">[docs]</a><span class="k">def</span> <span class="nf">cross_over</span><span class="p">(</span><span class="n">pop</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">lamb</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; This function allows to cross-over the selected parent with random other images with the same characteristics (sex, age and hair/beard wise).</span>
+<span class="sd">        It returns a new population of mutated vectors while keeping the parent.</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            pop : encoded images vector of the whole database\n</span>
+<span class="sd">            parent: the array selected by the user\n</span>
+<span class="sd">            lamb (int): the size of the total population (children + parent)</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            array containing lamb vectors from encoded pictures</span>
+
+<span class="sd">        Example :</span>
+<span class="sd">            &gt;&gt;&gt; len(cross_over(population, population[0], 4))</span>
+<span class="sd">            4</span>
+<span class="sd">            &gt;&gt;&gt; population[0] in cross-over(population[0], 4)</span>
+<span class="sd">            True</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">n_children</span> <span class="o">=</span> <span class="n">lamb</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pop</span><span class="p">)</span>
+    <span class="n">cross_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">n_children</span><span class="p">)</span>    <span class="c1"># sélectionne 3 index au hasard dans notre base de données</span>
+    <span class="c1">#print(cross_index)</span>
+    <span class="n">crossed</span> <span class="o">=</span> <span class="p">[</span><span class="n">parent</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cross_index</span><span class="p">:</span>
+        <span class="n">child</span><span class="o">=</span><span class="p">[]</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">parent</span><span class="p">)):</span>
+            <span class="n">child</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="n">parent</span><span class="p">[</span><span class="n">j</span><span class="p">],</span><span class="n">pop</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]]))</span> <span class="c1"># on fait la moyenne pour chaque attribut entre le vecteur parent et le vecteur choisi aléatoirement</span>
+        <span class="n">crossed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">crossed</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="mutation"><a class="viewcode-back" href="../Project.html#evolutionary.mutation">[docs]</a><span class="k">def</span> <span class="nf">mutation</span><span class="p">(</span><span class="n">pop</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; This function allows to mutate the picture&#39;s attributes using Gaussian distribution.</span>
+<span class="sd">        It returns a new population of mutated vectors.</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            pop : encoded images vector to mute</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            nparray containing modified vectors from encoded pictures</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">std</span><span class="o">=</span><span class="n">pop</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pop</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">pop</span><span class="p">)):</span>
+        <span class="n">random_value</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>  <span class="c1">#pour chaque enfant on choisi alpha</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">pop</span><span class="p">[</span><span class="n">i</span><span class="p">])):</span>
+            <span class="n">pop</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="o">+=</span><span class="n">random_value</span><span class="o">*</span><span class="n">std</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">pop</span></div>
+
+
+<div class="viewcode-block" id="get_children_from_parent"><a class="viewcode-back" href="../Project.html#evolutionary.get_children_from_parent">[docs]</a><span class="k">def</span> <span class="nf">get_children_from_parent</span><span class="p">(</span><span class="n">pop</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">lamb</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; This function allows to cross-over the parent pictures with other pictures and mutate the result picture to add diversity.</span>
+<span class="sd">        It returns a new population of mutated vectors.</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            pop : encoded images vector of the whole database\n</span>
+<span class="sd">            parent: the array selected by the user\n</span>
+<span class="sd">            lamb (int): the size of the total population (children + parent)</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            array containing lamb vectors from encoded pictures</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">children</span><span class="o">=</span><span class="n">cross_over</span><span class="p">(</span><span class="n">pop</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">lamb</span><span class="p">)</span>
+    <span class="n">mutated_children</span><span class="o">=</span><span class="n">mutation</span><span class="p">(</span><span class="n">children</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">mutated_children</span></div>
+
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span><span class="o">==</span><span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+
+
+
+    <span class="c1">#import doctest</span>
+    <span class="c1">#doctest.testmod(verbose=True)</span>
+
+
+    <span class="n">decoder</span> <span class="o">=</span> <span class="n">load_model</span><span class="p">(</span><span class="s2">&quot;model/decodeur.h5&quot;</span><span class="p">)</span>
+    <span class="n">encoded_imgs</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;images/img_female_old_straight.csv.npy&quot;</span><span class="p">)</span>
+
+
+
+<span class="c1">## Crossing cross_over</span>
+    <span class="n">children</span><span class="o">=</span><span class="n">cross_over</span><span class="p">(</span><span class="n">encoded_imgs</span><span class="p">,</span> <span class="n">encoded_imgs</span><span class="p">[</span><span class="mi">50</span><span class="p">],</span> <span class="mi">4</span><span class="p">)</span>
+    <span class="n">children_decoded</span> <span class="o">=</span> <span class="n">decoder</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">children</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">children</span><span class="p">)):</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">children</span><span class="p">),</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">children_decoded</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span><span class="mi">128</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+
+<span class="c1">## Mutation</span>
+
+    <span class="n">mutated_children</span><span class="o">=</span><span class="n">mutation</span><span class="p">(</span><span class="n">children</span><span class="p">)</span>
+    <span class="n">children_decoded2</span> <span class="o">=</span> <span class="n">decoder</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">mutated_children</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">children</span><span class="p">)):</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">children</span><span class="p">),</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">children_decoded2</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span><span class="mi">128</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Mutated&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1">## Generate new population</span>
+
+    <span class="n">x</span><span class="o">=</span><span class="n">get_children_from_parent</span><span class="p">(</span><span class="n">encoded_imgs</span><span class="p">,</span> <span class="n">encoded_imgs</span><span class="p">[</span><span class="mi">134</span><span class="p">],</span> <span class="mi">4</span><span class="p">)</span>
+    <span class="n">decoded_x</span><span class="o">=</span><span class="n">decoder</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)):</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">decoded_x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span><span class="mi">128</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">4BIM_Project</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Project.html">Project package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2022, Blanc, Charfi, Hong, Martin, Schwoertzig.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

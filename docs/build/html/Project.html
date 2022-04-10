@@ -1,0 +1,290 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project package &#8212; 4BIM_Project 1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Welcome to 4BIM_Project’s documentation!" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="project-package">
+<h1>Project package<a class="headerlink" href="#project-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-AutoEncoder">
+<span id="autoencoder-module"></span><h2>AutoEncoder module<a class="headerlink" href="#module-AutoEncoder" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="AutoEncoder.cut_list">
+<code class="sig-prename descclassname">AutoEncoder.</code><code class="sig-name descname">cut_list</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">list</span></em>, <em class="sig-param"><span class="n">length</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/AutoEncoder.html#cut_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AutoEncoder.cut_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="AutoEncoder.show_face_data">
+<code class="sig-prename descclassname">AutoEncoder.</code><code class="sig-name descname">show_face_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nparray</span></em>, <em class="sig-param"><span class="n">n</span><span class="o">=</span><span class="default_value">10</span></em>, <em class="sig-param"><span class="n">title</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/AutoEncoder.html#show_face_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AutoEncoder.show_face_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-evolutionary">
+<span id="evolutionary-module"></span><h2>evolutionary module<a class="headerlink" href="#module-evolutionary" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="evolutionary.cross_over">
+<code class="sig-prename descclassname">evolutionary.</code><code class="sig-name descname">cross_over</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pop</span></em>, <em class="sig-param"><span class="n">parent</span></em>, <em class="sig-param"><span class="n">lamb</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/evolutionary.html#cross_over"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#evolutionary.cross_over" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function allows to cross-over the selected parent with random other images with the same characteristics (sex, age and hair/beard wise).
+It returns a new population of mutated vectors while keeping the parent.</p>
+<dl>
+<dt>Args :</dt><dd><p>pop : encoded images vector of the whole database</p>
+<p>parent: the array selected by the user</p>
+<p>lamb (int): the size of the total population (children + parent)</p>
+</dd>
+<dt>Returns :</dt><dd><p>array containing lamb vectors from encoded pictures</p>
+</dd>
+<dt>Example :</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">cross_over</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">population</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">4</span><span class="p">))</span>
+<span class="go">4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">population</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="n">cross</span><span class="o">-</span><span class="n">over</span><span class="p">(</span><span class="n">population</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">4</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="evolutionary.get_children_from_parent">
+<code class="sig-prename descclassname">evolutionary.</code><code class="sig-name descname">get_children_from_parent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pop</span></em>, <em class="sig-param"><span class="n">parent</span></em>, <em class="sig-param"><span class="n">lamb</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/evolutionary.html#get_children_from_parent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#evolutionary.get_children_from_parent" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function allows to cross-over the parent pictures with other pictures and mutate the result picture to add diversity.
+It returns a new population of mutated vectors.</p>
+<dl>
+<dt>Args :</dt><dd><p>pop : encoded images vector of the whole database</p>
+<p>parent: the array selected by the user</p>
+<p>lamb (int): the size of the total population (children + parent)</p>
+</dd>
+<dt>Returns :</dt><dd><p>array containing lamb vectors from encoded pictures</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="evolutionary.mutation">
+<code class="sig-prename descclassname">evolutionary.</code><code class="sig-name descname">mutation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pop</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/evolutionary.html#mutation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#evolutionary.mutation" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function allows to mutate the picture’s attributes using Gaussian distribution.
+It returns a new population of mutated vectors.</p>
+<dl class="simple">
+<dt>Args :</dt><dd><p>pop : encoded images vector to mute</p>
+</dd>
+<dt>Returns :</dt><dd><p>nparray containing modified vectors from encoded pictures</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-filter_data">
+<span id="filter-data-module"></span><h2>filter_data module<a class="headerlink" href="#module-filter_data" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="filter_data.filter">
+<code class="sig-prename descclassname">filter_data.</code><code class="sig-name descname">filter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/filter_data.html#filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#filter_data.filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function creates 8 files containing different pictures sorted according specific attributes.</p>
+<dl class="simple">
+<dt>Args :</dt><dd><p>path : path to the database</p>
+</dd>
+<dt>Returns :</dt><dd><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="filter_data.split_encoded_images">
+<code class="sig-prename descclassname">filter_data.</code><code class="sig-name descname">split_encoded_images</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">encoder</span></em>, <em class="sig-param"><span class="n">csv_file</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/filter_data.html#split_encoded_images"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#filter_data.split_encoded_images" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function creates a file containing encoded vectors of images with the same caracteristics.</p>
+<dl class="simple">
+<dt>Args :</dt><dd><p>encoder : encoder loaded from file “encodeur.h5”
+csv_file : path to the csv file containing the listed pictures with the same caracteristics</p>
+</dd>
+<dt>Returns :</dt><dd><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-interface">
+<span id="interface-module"></span><h2>interface module<a class="headerlink" href="#module-interface" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="interface.bevent">
+<code class="sig-prename descclassname">interface.</code><code class="sig-name descname">bevent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">event</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/interface.html#bevent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#interface.bevent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="interface.choice_database">
+<code class="sig-prename descclassname">interface.</code><code class="sig-name descname">choice_database</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">char</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/interface.html#choice_database"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#interface.choice_database" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="interface.chooseimage">
+<code class="sig-prename descclassname">interface.</code><code class="sig-name descname">chooseimage</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pop</span></em>, <em class="sig-param"><span class="n">parent</span></em>, <em class="sig-param"><span class="n">nb_children</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/interface.html#chooseimage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#interface.chooseimage" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="interface.end_or_continue">
+<code class="sig-prename descclassname">interface.</code><code class="sig-name descname">end_or_continue</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">photo</span></em>, <em class="sig-param"><span class="n">pop</span></em>, <em class="sig-param"><span class="n">parent</span></em>, <em class="sig-param"><span class="n">nb_children</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/interface.html#end_or_continue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#interface.end_or_continue" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="interface.fevent">
+<code class="sig-prename descclassname">interface.</code><code class="sig-name descname">fevent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">event</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/interface.html#fevent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#interface.fevent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="interface.found_agressor">
+<code class="sig-prename descclassname">interface.</code><code class="sig-name descname">found_agressor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">photo</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/interface.html#found_agressor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#interface.found_agressor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="interface.hevent">
+<code class="sig-prename descclassname">interface.</code><code class="sig-name descname">hevent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">event</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/interface.html#hevent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#interface.hevent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="interface.inital_population">
+<code class="sig-prename descclassname">interface.</code><code class="sig-name descname">inital_population</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">event</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/interface.html#inital_population"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#interface.inital_population" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="interface.initialize">
+<code class="sig-prename descclassname">interface.</code><code class="sig-name descname">initialize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/interface.html#initialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#interface.initialize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="interface.nbevent">
+<code class="sig-prename descclassname">interface.</code><code class="sig-name descname">nbevent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">event</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/interface.html#nbevent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#interface.nbevent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="interface.nsevent">
+<code class="sig-prename descclassname">interface.</code><code class="sig-name descname">nsevent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">event</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/interface.html#nsevent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#interface.nsevent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="interface.oevent">
+<code class="sig-prename descclassname">interface.</code><code class="sig-name descname">oevent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">event</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/interface.html#oevent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#interface.oevent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="interface.onClick">
+<code class="sig-prename descclassname">interface.</code><code class="sig-name descname">onClick</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">event</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/interface.html#onClick"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#interface.onClick" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="interface.sevent">
+<code class="sig-prename descclassname">interface.</code><code class="sig-name descname">sevent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">event</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/interface.html#sevent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#interface.sevent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="interface.sex_characteristics">
+<code class="sig-prename descclassname">interface.</code><code class="sig-name descname">sex_characteristics</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">event</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/interface.html#sex_characteristics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#interface.sex_characteristics" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="interface.yevent">
+<code class="sig-prename descclassname">interface.</code><code class="sig-name descname">yevent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">event</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/interface.html#yevent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#interface.yevent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">4BIM_Project</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Project package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-AutoEncoder">AutoEncoder module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-evolutionary">evolutionary module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-filter_data">filter_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-interface">interface module</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Welcome to 4BIM_Project’s documentation!</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2022, Blanc, Charfi, Hong, Martin, Schwoertzig.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/Project.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
