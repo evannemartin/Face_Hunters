@@ -26,9 +26,9 @@ def initialize() :
 
 def onClick(event):
 
-        """ This function allows to generate a new interface to ask and store the characteristics of the agressor.
+    """ This function allows to generate a new interface to ask and store the characteristics of the agressor.
 
-        """
+    """
 
     for c in myWindow.winfo_children():
         c.destroy()
